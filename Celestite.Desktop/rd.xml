@@ -1,0 +1,11 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+    <Application>
+        <Assembly Name="Celestite">
+            <Type Name="Celestite.Configs.LauncherConfig" Dynamic="Required All" />
+            <Type Name="Celestite.Configs.BaseSection" Dynamic="Required All" />
+            <Type Name="Celestite.Configs.AccountObject" Dynamic="Required All" />
+            <Type Name="Celestite.Configs.NonWindowsExclusiveConfig" Dynamic="Required All" />
+            <Type Name="Celestite.Configs.GameSettingsForLauncher" Dynamic="Required All" />
+        </Assembly>
+    </Application>
+</Directives>

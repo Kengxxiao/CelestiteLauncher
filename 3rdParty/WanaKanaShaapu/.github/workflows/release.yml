@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Pack
+      run: dotnet pack ./**/WanaKanaShaapu.csproj -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See release notes at https://github.com/kmoroz/WanaKanaShaapu/releases/tag/${{ github.event.release.tag_name }}"
+      
+    - name: Publish
+      run: dotnet nuget push */**/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json

@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+
+             xmlns:vm="using:Celestite.ViewModels.Dialogs"
+             xmlns:model="using:Celestite.Network.Models"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:locale="clr-namespace:Celestite.I18N"
+
+             x:DataType="vm:HardwareListDialogViewModel" Width="500"
+             x:Class="Celestite.Dialogs.HardwareListDialog">
+	<StackPanel Spacing="4">
+		<TextBlock Text="{Binding MaxAuthCount, StringFormat={x:Static locale:Localization.HardwareRejectDesc}}"></TextBlock>
+		<TextBlock>
+			<TextBlock.Text>
+				<MultiBinding StringFormat="{x:Static locale:Localization.HardwareRegAuthedDevices}">
+					<Binding Path="Hardware.Count"></Binding>
+					<Binding Path="MaxAuthCount"></Binding>
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+		<ui:FABorder
+            CornerRadius="{DynamicResource ControlCornerRadius}"
+            BorderBrush="{DynamicResource ExpanderHeaderBorderBrush}"
+            BorderThickness="{DynamicResource ExpanderHeaderBorderThickness}"
+            Background="{DynamicResource ExpanderHeaderBackground}"
+            Padding="20"
+        >
+			<ScrollViewer>
+				<ItemsRepeater ItemsSource="{Binding Hardware}" Height="200">
+					<ItemsRepeater.Layout>
+						<StackLayout Spacing="8"></StackLayout>
+					</ItemsRepeater.Layout>
+					<ItemsRepeater.ItemTemplate>
+						<DataTemplate x:DataType="model:Hardware">
+							<CheckBox IsChecked="{Binding IsChecked}" Content="{Binding HardwareName}"></CheckBox>
+						</DataTemplate>
+					</ItemsRepeater.ItemTemplate>
+				</ItemsRepeater>
+			</ScrollViewer>
+		</ui:FABorder>
+	</StackPanel>
+</UserControl>

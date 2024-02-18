@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Celestite": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

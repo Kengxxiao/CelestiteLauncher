@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Celestite.ViewModels.Dialogs"
+             xmlns:converter="using:Celestite.Utils.Converters"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:locale="using:Celestite.I18N"
+             xmlns:pages="clr-namespace:Celestite.ViewModels.Pages"
+             x:DataType="vm:UpdateGameDialogViewModel"
+             x:Class="Celestite.Dialogs.Games.UpdateGameDialog">
+	<UserControl.Resources>
+		<converter:FileSizeConverter x:Key="FileSizeConverter"></converter:FileSizeConverter>
+	</UserControl.Resources>
+	<StackPanel Spacing="8">
+		<TextBlock Text="{Binding FileSize, StringFormat='{x:Static locale:Localization.UpdateFileSize}', Converter={StaticResource FileSizeConverter}}"></TextBlock>
+		<TextBlock TextWrapping="Wrap" Text="{x:Static locale:Localization.UpdateDesc1}">
+
+		</TextBlock>
+	</StackPanel>
+</UserControl>

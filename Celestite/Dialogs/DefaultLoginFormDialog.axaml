@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Celestite.ViewModels.Dialogs"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:locale="using:Celestite.I18N"
+             x:DataType="vm:DefaultLoginFormDialogViewModel"
+             x:Class="Celestite.Dialogs.DefaultLoginFormDialog">
+	<UserControl.DataContext>
+		<vm:DefaultLoginFormDialogViewModel></vm:DefaultLoginFormDialogViewModel>
+	</UserControl.DataContext>
+	<StackPanel Spacing="8">
+		<AutoCompleteBox Text="{Binding Email}" Watermark="{x:Static locale:Localization.DefaultLoginDialogEmail}" MinimumPrefixLength="3" ItemsSource="{Binding AutoCompleteItems}"></AutoCompleteBox>
+		<CheckBox IsEnabled="{Binding !LockSaveEmail}" IsChecked="{Binding SaveEmail}" Content="{x:Static locale:Localization.DefaultLoginDialogSaveEmail}"></CheckBox>
+		<TextBox Text="{Binding Password}" Watermark="{x:Static locale:Localization.DefaultLoginDialogPassword}" PasswordChar="●"></TextBox>
+		<CheckBox IsEnabled="{Binding !LockSavePassword}" IsChecked="{Binding SavePassword}" Content="{x:Static locale:Localization.DefaultLoginDialogSavePassword}"></CheckBox>
+		<CheckBox IsChecked="{Binding AutoLogin}" Content="{x:Static locale:Localization.DefaultLoginDialogAutoLogin}"></CheckBox>
+	</StackPanel>
+</UserControl>

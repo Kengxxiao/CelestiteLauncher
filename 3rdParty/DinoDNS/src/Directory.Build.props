@@ -1,0 +1,30 @@
+<Project>
+
+	<PropertyGroup>
+		<RootNamespace>TurnerSoftware.DinoDNS</RootNamespace>
+
+		<Company>Turner Software</Company>
+
+		<PackageId>$(AssemblyName)</PackageId>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/TurnerSoftware/DinoDNS</PackageProjectUrl>
+		<PackageBaseTags>dns,client,resolver,server,doh,https,dot,tls</PackageBaseTags>
+
+		<!-- SourceLink Support -->
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<DebugType>embedded</DebugType>
+
+		<LangVersion>Latest</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\images\$(PackageIcon)" Pack="true" PackagePath="/" />
+	</ItemGroup>
+
+</Project>

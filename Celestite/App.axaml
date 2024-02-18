@@ -1,0 +1,38 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Celestite.App"
+			 xmlns:vm="using:Celestite.ViewModels"
+			 xmlns:locale="using:Celestite.I18N"
+			 x:DataType="vm:AppViewModel"
+             xmlns:sty="using:FluentAvalonia.Styling">
+
+	<Application.DataContext>
+		<vm:AppViewModel></vm:AppViewModel>
+	</Application.DataContext>
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="avares://Celestite/Styling/Resources.axaml"></ResourceInclude>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+	<Application.Styles>
+		<sty:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
+	</Application.Styles>
+	<TrayIcon.Icons>
+		<TrayIcons>
+			<TrayIcon Icon="{OnPlatform Windows=avares://Celestite.Desktop/Assets/celestite-icon.ico, Linux=/Assets/celestite-icon.png}" ToolTipText="{x:Static vm:AppViewModel.TrayText}"
+                      Command="{Binding ReShowMainWindowCommand}">
+				<TrayIcon.Menu>
+					<NativeMenu>
+						<NativeMenuItem Header="{x:Static locale:Localization.TrayOpenPanel}" Command="{Binding ReShowMainWindowCommand}"></NativeMenuItem>
+						<NativeMenuItemSeparator />
+						<NativeMenuItem Header="{x:Static locale:Localization.TrayFastLaunch}" Menu="{Binding Menu}"></NativeMenuItem>
+						<NativeMenuItemSeparator />
+						<NativeMenuItem Header="{x:Static locale:Localization.TrayExit}" Command="{Binding ExitCommand}"></NativeMenuItem>
+					</NativeMenu>
+				</TrayIcon.Menu>
+			</TrayIcon>
+		</TrayIcons>
+	</TrayIcon.Icons>
+</Application>

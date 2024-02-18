@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Dapper.AOT</InterceptorsPreviewNamespaces>
+		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<RdXmlFile Include="rd.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\celestite-icon.png" />
+		<AvaloniaResource Include="Assets\Cert\cacert.pem" />
+		<AvaloniaResource Include="Assets\Cert\himari_proxy.pem" />
+		<AvaloniaResource Include="Assets\I18N\en-US.json" />
+		<AvaloniaResource Include="Assets\I18N\zh-CN.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="Assets\I18N\zh-CN.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Analyzer Include="..\3rdParty\LocalizationSourceGenerator.dll" PrivateAssets="all" ExcludeAssets="runtime" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="SimdLinq" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Include="AngleSharp" Version="1.1.0" />
+		<PackageReference Include="Avalonia" Version="11.0.9" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="11.0.9" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" PrivateAssets="All" />
+		<PackageReference Include="Dapper" Version="2.1.28" />
+		<PackageReference Include="Dapper.AOT" Version="1.0.31" />
+		<PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
+		<PackageReference Include="MemoryPack" Version="1.10.0" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.1" />
+		<PackageReference Include="R3Extensions.Avalonia" Version="0.1.20" />
+		<PackageReference Include="SimdLinq" Version="1.3.2" />
+		<PackageReference Include="Splat" Version="14.8.12" />
+		<PackageReference Include="System.IO.Hashing" Version="8.0.0" />
+		<PackageReference Include="System.Management" Version="8.0.0" />
+		<PackageReference Include="System.Reactive" Version="6.0.0" />
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+		<PackageReference Include="UniTask" Version="2.5.3" />
+		<PackageReference Include="WmiLight" Version="5.1.1" />
+		<PackageReference Include="ZeroLog" Version="2.1.1" />
+		<PackageReference Include="ZString" Version="2.5.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\3rdParty\DinoDNS\src\TurnerSoftware.DinoDNS\TurnerSoftware.DinoDNS.csproj" />
+		<ProjectReference Include="..\3rdParty\FluentAvalonia\src\FluentAvalonia\FluentAvalonia.csproj" />
+		<ProjectReference Include="..\3rdParty\WanaKanaShaapu\WanaKanaShaapu\WanaKanaShaapu.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="LICENSE.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

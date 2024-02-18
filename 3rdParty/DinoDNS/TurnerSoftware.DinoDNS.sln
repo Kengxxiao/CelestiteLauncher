@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31903.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurnerSoftware.DinoDNS", "src\TurnerSoftware.DinoDNS\TurnerSoftware.DinoDNS.csproj", "{80D46F85-47AB-42E1-83A7-2AD18F461136}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{62DFC3CC-B847-43C6-AA52-2B01C487C7BB}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8E433D5C-5DDB-4486-85F9-03299A9DB172}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurnerSoftware.DinoDNS.Tests", "tests\TurnerSoftware.DinoDNS.Tests\TurnerSoftware.DinoDNS.Tests.csproj", "{FFCA3CC3-927A-4CAF-A7E3-EACEAAEE531F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurnerSoftware.DinoDNS.TestConsole", "tests\TurnerSoftware.DinoDNS.TestConsole\TurnerSoftware.DinoDNS.TestConsole.csproj", "{37EAF37C-900F-4B30-90F8-37C420EB74ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{593D09FA-7858-4252-AD34-DFA52F8C0BB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurnerSoftware.DinoDNS.Benchmarks", "benchmarks\TurnerSoftware.DinoDNS.Benchmarks\TurnerSoftware.DinoDNS.Benchmarks.csproj", "{11BED4F7-B487-40B4-AF1D-6E315B413006}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{A096D678-DFDF-41AF-A088-C8738CE254F3}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		License.txt = License.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaticDnsServer", "benchmarks\StaticDnsServer\StaticDnsServer.csproj", "{7A163C84-5039-4973-B808-D4AFFCDA6DC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurnerSoftware.DinoDNS.TestServer", "tests\TurnerSoftware.DinoDNS.TestServer\TurnerSoftware.DinoDNS.TestServer.csproj", "{CDC049F9-ECC3-40EC-BC40-E3C14F17DC8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80D46F85-47AB-42E1-83A7-2AD18F461136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80D46F85-47AB-42E1-83A7-2AD18F461136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80D46F85-47AB-42E1-83A7-2AD18F461136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80D46F85-47AB-42E1-83A7-2AD18F461136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFCA3CC3-927A-4CAF-A7E3-EACEAAEE531F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFCA3CC3-927A-4CAF-A7E3-EACEAAEE531F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFCA3CC3-927A-4CAF-A7E3-EACEAAEE531F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFCA3CC3-927A-4CAF-A7E3-EACEAAEE531F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37EAF37C-900F-4B30-90F8-37C420EB74ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37EAF37C-900F-4B30-90F8-37C420EB74ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37EAF37C-900F-4B30-90F8-37C420EB74ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37EAF37C-900F-4B30-90F8-37C420EB74ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BED4F7-B487-40B4-AF1D-6E315B413006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BED4F7-B487-40B4-AF1D-6E315B413006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11BED4F7-B487-40B4-AF1D-6E315B413006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11BED4F7-B487-40B4-AF1D-6E315B413006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A163C84-5039-4973-B808-D4AFFCDA6DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A163C84-5039-4973-B808-D4AFFCDA6DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A163C84-5039-4973-B808-D4AFFCDA6DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A163C84-5039-4973-B808-D4AFFCDA6DC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDC049F9-ECC3-40EC-BC40-E3C14F17DC8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC049F9-ECC3-40EC-BC40-E3C14F17DC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC049F9-ECC3-40EC-BC40-E3C14F17DC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC049F9-ECC3-40EC-BC40-E3C14F17DC8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80D46F85-47AB-42E1-83A7-2AD18F461136} = {62DFC3CC-B847-43C6-AA52-2B01C487C7BB}
+		{FFCA3CC3-927A-4CAF-A7E3-EACEAAEE531F} = {8E433D5C-5DDB-4486-85F9-03299A9DB172}
+		{37EAF37C-900F-4B30-90F8-37C420EB74ED} = {8E433D5C-5DDB-4486-85F9-03299A9DB172}
+		{11BED4F7-B487-40B4-AF1D-6E315B413006} = {593D09FA-7858-4252-AD34-DFA52F8C0BB8}
+		{7A163C84-5039-4973-B808-D4AFFCDA6DC0} = {593D09FA-7858-4252-AD34-DFA52F8C0BB8}
+		{CDC049F9-ECC3-40EC-BC40-E3C14F17DC8C} = {8E433D5C-5DDB-4486-85F9-03299A9DB172}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5B49E2E-EBD4-4D11-AA46-DB1401B23880}
+	EndGlobalSection
+EndGlobal

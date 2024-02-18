@@ -1,0 +1,9 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<!-- Add Resources Here -->
+
+	<Thickness x:Key="PageMargin">20 0 20 0</Thickness>
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceInclude Source="/Controls/DmmGameExpander/DmmGameExpanderStyles.axaml"></ResourceInclude>
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:locale="using:Celestite.I18N"
+             xmlns:vm="using:Celestite.ViewModels.Dialogs"
+             x:DataType="vm:AgreementDialogViewModel"
+             x:Class="Celestite.Dialogs.Games.AgreementCheckDialog">
+	<StackPanel Spacing="8">
+		<ScrollViewer MaxHeight="300">
+			<TextBlock
+                TextWrapping="Wrap"
+                Text="{Binding Agreement, Mode=OneWay}"
+                Padding="0 0 8 0"
+            ></TextBlock>
+		</ScrollViewer>
+		<CheckBox
+            IsChecked="{Binding IsNotification}"
+            Content="{x:Static locale:Localization.NotificationCheckbox}"
+            ></CheckBox>
+		<CheckBox
+            IsChecked="{Binding IsProfileApp}"
+            Content="{x:Static locale:Localization.InProfileAppCheckbox}"
+        ></CheckBox>
+	</StackPanel>
+</UserControl>

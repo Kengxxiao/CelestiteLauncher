@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+
+             xmlns:vm="using:Celestite.ViewModels.Pages"
+             xmlns:loc="using:Celestite.I18N"
+			 xmlns:fluent="using:FluentAvalonia.UI.Controls"
+             x:DataType="vm:AccountPageViewModel"
+
+             x:Class="Celestite.AccountPage">
+	<UserControl.DataContext>
+		<vm:AccountPageViewModel></vm:AccountPageViewModel>
+	</UserControl.DataContext>
+	<StackPanel Spacing="8">
+		<DockPanel LastChildFill="False">
+			<TextBlock DockPanel.Dock="Left" Margin="0, 8" Text="{x:Static loc:Localization.HeaderAccount}" Theme="{StaticResource SubtitleTextBlockStyle}" ></TextBlock>
+			<fluent:CommandBar DockPanel.Dock="Right" DefaultLabelPosition="Right">
+				<fluent:CommandBar.PrimaryCommands>
+					<fluent:CommandBarButton Command="{Binding AddAccountCommand}"
+                        IconSource="PersonAdd" Label="{x:Static loc:Localization.AccountAdd}"
+                    ></fluent:CommandBarButton>
+				</fluent:CommandBar.PrimaryCommands>
+			</fluent:CommandBar>
+		</DockPanel>
+		<ItemsRepeater IsEnabled="True" ItemsSource="{Binding AccountObjects}" x:Name="Repeater">
+			<ItemsRepeater.Layout>
+				<StackLayout Spacing="8"></StackLayout>
+			</ItemsRepeater.Layout>
+			<ItemsRepeater.ItemTemplate>
+				<DataTemplate x:DataType="vm:AccountObjectForRenderer">
+					<fluent:SettingsExpander
+						Header="{Binding NickName}"
+						Description="{Binding Email}"
+						IsExpanded="False"
+                        >
+						<fluent:SettingsExpander.Footer>
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<fluent:IconSourceElement IsVisible="{Binding IsCurrent}"
+                                                          IconSource="RibbonStar"
+                                >
+								</fluent:IconSourceElement>
+								<Button Content="{x:Static loc:Localization.AccountSwitch}" MinWidth="100" Command="{Binding $parent[ItemsRepeater].((vm:AccountPageViewModel)DataContext).ChangeAccountCommand}" CommandParameter="{Binding InnerGuid}"></Button>
+								<Button Content="{x:Static loc:Localization.AccountDelete}" MinWidth="100" Classes="accent" Command="{Binding $parent[ItemsRepeater].((vm:AccountPageViewModel)DataContext).DeleteAccountCommand}" CommandParameter="{Binding InnerGuid}"></Button>
+							</StackPanel>
+						</fluent:SettingsExpander.Footer>
+						<fluent:SettingsExpanderItem Content="{x:Static loc:Localization.DefaultLoginDialogAutoLogin}">
+							<fluent:SettingsExpanderItem.Footer>
+								<ToggleSwitch
+                                    IsChecked="{Binding AutoLogin}"
+									OnContent="{x:Static loc:Localization.ToggleOn}"
+									OffContent="{x:Static loc:Localization.ToggleOff}"
+                                    >
+
+								</ToggleSwitch>
+							</fluent:SettingsExpanderItem.Footer>
+						</fluent:SettingsExpanderItem>
+					</fluent:SettingsExpander>
+				</DataTemplate>
+			</ItemsRepeater.ItemTemplate>
+		</ItemsRepeater>
+	</StackPanel>
+</UserControl>

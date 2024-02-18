@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Celestite.ViewModels.DefaultVM"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:locale="using:Celestite.I18N"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:DmmProfileRegistrationPageViewModel"
+             x:Class="Celestite.Pages.Default.DmmProfileRegistrationPage">
+	<UserControl.DataContext>
+		<vm:DmmProfileRegistrationPageViewModel></vm:DmmProfileRegistrationPageViewModel>
+	</UserControl.DataContext>
+	<ScrollViewer Padding="20 20 20 0">
+		<StackPanel Spacing="8">
+			<TextBlock Text="{x:Static locale:Localization.ProfileRegisterTitle}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+			<TextBlock Text="{x:Static locale:Localization.ProfileRegisterSubtitle1}"></TextBlock>
+			<TextBlock Text="{x:Static locale:Localization.ProfileRegisterSubtitle2}"></TextBlock>
+			<TextBlock HorizontalAlignment="Right" Foreground="Red" Text="{x:Static locale:Localization.ProfileRegisterSubtitle3}"></TextBlock>
+			<fluent:InfoBar
+                            Severity="Error"
+                            IsClosable="False"
+                            Title="{x:Static locale:Localization.InfoBarDefault}"
+                            Message="{Binding ErrorMessage}"
+                            IsOpen="{Binding ErrorMessage, Converter={x:Static
+							 StringConverters.IsNotNullOrEmpty}}"
+            ></fluent:InfoBar>
+			<fluent:SettingsExpander
+                Header="{x:Static locale:Localization.ProfileRegisterNickname}"
+				IconSource="PersonEdit"
+				Description="{x:Static locale:Localization.ProfileRegisterNicknameDescription}"
+                >
+				<fluent:SettingsExpander.Footer>
+					<StackPanel Spacing="8" Orientation="Horizontal">
+						<TextBox Text="{Binding NickName}" MinWidth="300" Watermark="{x:Static locale:Localization.ProfileRegisterNickname}"></TextBox>
+						<Button Command="{Binding GenerateRandomNameCommand}" Content="{x:Static locale:Localization.ProfileRegisterRandomGenButton}" MinWidth="100"></Button>
+					</StackPanel>
+				</fluent:SettingsExpander.Footer>
+			</fluent:SettingsExpander>
+			<fluent:SettingsExpander
+				Header="{x:Static locale:Localization.ProfileRegisterGender}"
+                IconSource="PersonSettings"
+                >
+				<fluent:SettingsExpander.Footer>
+					<StackPanel Spacing="8" Orientation="Horizontal">
+						<RadioButton IsChecked="{Binding IsMaleChecked}" Content="{x:Static locale:Localization.ProfileRegisterMale}"></RadioButton>
+						<RadioButton IsChecked="{Binding !IsMaleChecked}" Content="{x:Static locale:Localization.ProfileRegisterFemale}"></RadioButton>
+					</StackPanel>
+				</fluent:SettingsExpander.Footer>
+			</fluent:SettingsExpander>
+			<fluent:SettingsExpander
+                Header="{x:Static locale:Localization.ProfileRegisterBirthday}"
+                IconSource="CalendarLtr"
+				Description="{x:Static locale:Localization.ProfileRegisterBirthdayDescription}"
+            >
+				<fluent:SettingsExpander.Footer>
+					<CalendarDatePicker SelectedDate="{Binding Birthday}" MinWidth="300"></CalendarDatePicker>
+				</fluent:SettingsExpander.Footer>
+			</fluent:SettingsExpander>
+			<Button Command="{Binding StartRegisterCommand}" Classes="accent" Content="{x:Static locale:Localization.ButtonOk}" MinWidth="200" HorizontalAlignment="Right"></Button>
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

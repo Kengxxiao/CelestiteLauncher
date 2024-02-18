@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Celestite.ViewModels.Dialogs"
+             xmlns:network="using:Celestite.Network.Models" MinWidth="500"
+             xmlns:locale="using:Celestite.I18N"
+             x:DataType="vm:AddClientGameDialogViewModel"
+             x:Class="Celestite.Dialogs.Games.AddClientGameDialog">
+
+	<StackPanel Spacing="4">
+		<TextBlock Text="{x:Static locale:Localization.AddGameDialogGameId}"></TextBlock>
+		<AutoCompleteBox
+            Text="{Binding GameId, Mode=TwoWay}"
+            ItemsSource="{Binding Games, Mode=OneWay}"
+            ItemFilter="{x:Static vm:AddClientGameDialogViewModel.AutoCompleteFilter}"
+            ValueMemberBinding="{Binding ProductId, x:DataType=network:SearchGameData}"
+            Watermark="{x:Static locale:Localization.AddGameDialogGameId}"
+            MinimumPrefixLength="2"
+            >
+			<AutoCompleteBox.ItemTemplate>
+				<DataTemplate x:DataType="network:SearchGameData">
+					<StackPanel Orientation="Horizontal" Spacing="8">
+						<Image Source="{Binding Image^}" Height="40"></Image>
+						<StackPanel HorizontalAlignment="Left"
+                                    VerticalAlignment="Center" Margin="0 4">
+							<TextBlock Text="{Binding ProductId}" />
+							<TextBlock Text="{Binding Title}"
+                                       Theme="{StaticResource CaptionTextBlockStyle}"
+                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+						</StackPanel>
+					</StackPanel>
+				</DataTemplate>
+			</AutoCompleteBox.ItemTemplate>
+		</AutoCompleteBox>
+	</StackPanel>
+</UserControl>

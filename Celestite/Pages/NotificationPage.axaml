@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Celestite.ViewModels.Pages"
+             xmlns:locale="clr-namespace:Celestite.I18N"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             x:DataType="vm:NotificationPageViewModel"
+             x:Class="Celestite.Pages.NotificationPage">
+	<UserControl.DataContext>
+		<vm:NotificationPageViewModel></vm:NotificationPageViewModel>
+	</UserControl.DataContext>
+
+	<StackPanel Spacing="8">
+		<TextBlock Text="{x:Static locale:Localization.LeftNavNotifications}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<ItemsRepeater ItemsSource="{Binding Notifications}">
+			<ItemsRepeater.ItemTemplate>
+				<DataTemplate>
+					<fluent:SettingsExpander
+                        IconSource="{Binding Image^}"
+                        Header="{Binding MsgTitle}"
+                        Description="{Binding MessageBody}"
+                        ActionIconSource="ChevronRight"
+                        IsClickEnabled="True"
+                        Command="{Binding ClickCommand}"
+                    ></fluent:SettingsExpander>
+				</DataTemplate>
+			</ItemsRepeater.ItemTemplate>
+			<ItemsRepeater.Layout>
+				<StackLayout Spacing="8"></StackLayout>
+			</ItemsRepeater.Layout>
+		</ItemsRepeater>
+	</StackPanel>
+</UserControl>

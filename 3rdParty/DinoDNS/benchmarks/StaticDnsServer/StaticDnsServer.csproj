@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\TurnerSoftware.DinoDNS\TurnerSoftware.DinoDNS.csproj" />
+		<ProjectReference Include="..\..\tests\TurnerSoftware.DinoDNS.TestServer\TurnerSoftware.DinoDNS.TestServer.csproj" />
+	</ItemGroup>
+
+</Project>

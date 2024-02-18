@@ -1,0 +1,231 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:control="using:Celestite.Controls"
+			 xmlns:fluent="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:Celestite.ViewModels.Pages"
+             xmlns:locale="clr-namespace:Celestite.I18N"
+			 xmlns:sys="using:System.Collections.Generic"
+             x:DataType="vm:MissionPageViewModel"
+			 DataContext="{x:Static vm:MissionPageViewModel.Instance}"
+             x:Class="Celestite.Pages.MissionPage">
+	<StackPanel Spacing="8">
+		<DockPanel LastChildFill="False">
+			<TextBlock DockPanel.Dock="Left" Text="{x:Static locale:Localization.LeftMissions}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+			<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8">
+				<fluent:CommandBar DockPanel.Dock="Right" DefaultLabelPosition="Right" IsEnabled="{Binding !RefreshTasksCommand.IsRunning}">
+					<fluent:CommandBar.PrimaryCommands>
+						<fluent:CommandBarElementContainer Padding="8 0">
+							<Panel HorizontalAlignment="Center">
+								<Viewbox Width="16" Height="16"
+                                         HorizontalAlignment="Left">
+									<fluent:IconSourceElement IconSource="BookCoins"></fluent:IconSourceElement>
+								</Viewbox>
+								<TextBlock MinWidth="60" TextAlignment="Center"
+                                    Text="{Binding MedalCount, FallbackValue=0}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="28 4 0 4" />
+							</Panel>
+						</fluent:CommandBarElementContainer>
+						<fluent:CommandBarSeparator></fluent:CommandBarSeparator>
+						<fluent:CommandBarToggleButton
+                            IconSource="ProtocolHandler"
+							Label="FANZA"
+							IsChecked="{Binding Fanza}">
+						</fluent:CommandBarToggleButton>
+						<fluent:CommandBarToggleButton
+                            IconSource="Phone"
+                            Label="{x:Static locale:Localization.MissionMobileMode}"
+                            IsChecked="{Binding MobileMode, Mode=TwoWay}"
+                        ></fluent:CommandBarToggleButton>
+						<fluent:CommandBarSeparator></fluent:CommandBarSeparator>
+						<fluent:CommandBarButton
+                            IconSource="ArrowSync"
+                            Label="{x:Static locale:Localization.MissionButtonRefresh}"
+							Command="{Binding RefreshTasksCommand}"
+                        ></fluent:CommandBarButton>
+						<fluent:CommandBarButton
+                            IconSource="SelectAllOn"
+                            Label="{x:Static locale:Localization.MissionButtonReceiveAll}"
+                            Command="{Binding ReceiveAllRewardsCommand}"
+                        ></fluent:CommandBarButton>
+						<fluent:CommandBarSeparator></fluent:CommandBarSeparator>
+						<fluent:CommandBarButton
+							IconSource="ShoppingBag"
+							Label="{x:Static locale:Localization.MissionExchangePoint}"
+							Command="{Binding ExchangeMedalCommand}"
+                        ></fluent:CommandBarButton>
+					</fluent:CommandBar.PrimaryCommands>
+				</fluent:CommandBar>
+			</StackPanel>
+		</DockPanel>
+		<ItemsRepeater ItemsSource="{Binding Mission}">
+			<ItemsRepeater.Layout>
+				<StackLayout Spacing="8"></StackLayout>
+			</ItemsRepeater.Layout>
+			<ItemsRepeater.ItemTemplate>
+				<DataTemplate x:DataType="vm:MissionDataV2ViewModel">
+					<StackPanel Spacing="4">
+						<DockPanel LastChildFill="False">
+							<TextBlock DockPanel.Dock="Left" Text="{Binding Caption, FallbackValue=''}"></TextBlock>
+							<TextBlock DockPanel.Dock="Right" Text="{Binding Note, FallbackValue=''}"
+									   IsVisible="{Binding Note, Converter={x:Static StringConverters.IsNotNullOrEmpty}, FallbackValue=False}"></TextBlock>
+						</DockPanel>
+						<ItemsRepeater ItemsSource="{Binding MissionDataV2Type4, FallbackValue=''}">
+							<ItemsRepeater.Layout>
+								<StackLayout Spacing="8"></StackLayout>
+							</ItemsRepeater.Layout>
+							<ItemsRepeater.ItemTemplate>
+								<DataTemplate x:DataType="vm:MissionDataV2Type4">
+									<fluent:SettingsExpander
+                                        Header="{Binding Title}"
+                                        Description="{Binding Status}"
+                                        IconSource="{Binding HeadIconSource}"
+                                        IsExpanded="True">
+										<fluent:SettingsExpander.Footer>
+											<TextBlock Text="{Binding MedalScore}"></TextBlock>
+										</fluent:SettingsExpander.Footer>
+										<StackPanel Spacing="4">
+											<ItemsRepeater ItemsSource="{Binding Definition}">
+												<ItemsRepeater.Layout>
+													<StackLayout Spacing="4"></StackLayout>
+												</ItemsRepeater.Layout>
+												<ItemsRepeater.ItemTemplate>
+													<DataTemplate>
+														<DataTemplate.DataType>
+															<x:Type TypeName="sys:KeyValuePair" x:TypeArguments="x:String, x:String"/>
+														</DataTemplate.DataType>
+														<StackPanel Spacing="4" Orientation="Horizontal">
+															<TextBlock Text="{Binding Key}"></TextBlock>
+															<TextBlock Text="{Binding Value}"></TextBlock>
+														</StackPanel>
+													</DataTemplate>
+												</ItemsRepeater.ItemTemplate>
+											</ItemsRepeater>
+											<ItemsRepeater x:DataType="vm:MissionDataV2Type4" ItemsSource="{Binding Games}">
+												<ItemsRepeater.Layout>
+													<StackLayout Spacing="8"></StackLayout>
+												</ItemsRepeater.Layout>
+												<ItemsRepeater.ItemTemplate>
+													<DataTemplate x:DataType="vm:MissionGameData">
+														<control:DmmGameExpander
+                                                            Header="{Binding Name}"
+                                                            Description="{Binding IsPlayedText}"
+                                                            GameIcon="{Binding ImageData^}"
+                                                            Action3="Bot"
+                                                            Action3Label="{x:Static locale:Localization.ButtonEmuLaunch}"
+                                                            Action3Command="{Binding EmuLaunchCommand}"
+                                                            >
+
+														</control:DmmGameExpander>
+													</DataTemplate>
+												</ItemsRepeater.ItemTemplate>
+											</ItemsRepeater>
+											<TextBlock Text="{Binding LotteryNote}"></TextBlock>
+										</StackPanel>
+										<fluent:SettingsExpanderItem>
+											<fluent:SettingsExpanderItem.Footer>
+												<Button IsEnabled="{Binding IsNotStarted}" Content="{Binding ButtonText}" Command="{Binding SubmitStartCommand}"></Button>
+											</fluent:SettingsExpanderItem.Footer>
+										</fluent:SettingsExpanderItem>
+									</fluent:SettingsExpander>
+								</DataTemplate>
+							</ItemsRepeater.ItemTemplate>
+						</ItemsRepeater>
+						<ItemsRepeater ItemsSource="{Binding MissionDataV2Type3, FallbackValue=''}">
+							<ItemsRepeater.Layout>
+								<StackLayout Spacing="8"></StackLayout>
+							</ItemsRepeater.Layout>
+							<ItemsRepeater.ItemTemplate>
+								<DataTemplate x:DataType="vm:MissionDataV2Type3">
+									<fluent:SettingsExpander
+                                        Header="{Binding Title}"
+										Description="{Binding Status}"
+                                        IconSource="{Binding HeadIconSource}"
+										IsExpanded="True">
+										<StackPanel Spacing="4">
+											<TextBlock Text="{Binding Text}"></TextBlock>
+											<ItemsRepeater ItemsSource="{Binding Definition}">
+												<ItemsRepeater.Layout>
+													<StackLayout Spacing="4"></StackLayout>
+												</ItemsRepeater.Layout>
+												<ItemsRepeater.ItemTemplate>
+													<DataTemplate>
+														<DataTemplate.DataType>
+															<x:Type TypeName="sys:KeyValuePair" x:TypeArguments="x:String, x:String"/>
+														</DataTemplate.DataType>
+														<StackPanel Spacing="4" Orientation="Horizontal">
+															<TextBlock Text="{Binding Key}"></TextBlock>
+															<TextBlock Text="{Binding Value}"></TextBlock>
+														</StackPanel>
+													</DataTemplate>
+												</ItemsRepeater.ItemTemplate>
+											</ItemsRepeater>
+											<TextBlock Text="{Binding LotteryNote}"></TextBlock>
+										</StackPanel>
+									</fluent:SettingsExpander>
+								</DataTemplate>
+							</ItemsRepeater.ItemTemplate>
+						</ItemsRepeater>
+						<ItemsRepeater ItemsSource="{Binding MissionDataV2Type2, FallbackValue=''}">
+							<ItemsRepeater.Layout>
+								<StackLayout Spacing="8"></StackLayout>
+							</ItemsRepeater.Layout>
+							<ItemsRepeater.ItemTemplate>
+								<DataTemplate x:DataType="vm:MissionDataV2Type2">
+									<Panel>
+										<fluent:SettingsExpander
+											Header="{Binding Title}"
+											Description="{Binding Status}"
+                                            IconSource="{Binding HeadIconSource}"
+											IsExpanded="{Binding IsExpandable}"
+											ActionIconSource="ChevronRight"
+											IsClickEnabled="True"
+											IsVisible="{Binding !IsExpandable}"
+											Command="{Binding OpenExternalUrlCommand}">
+											<fluent:SettingsExpander.Footer>
+												<TextBlock Text="{Binding MedalScore}"></TextBlock>
+											</fluent:SettingsExpander.Footer>
+										</fluent:SettingsExpander>
+										<fluent:SettingsExpander
+											Header="{Binding Title}"
+											Description="{Binding Status}"
+                                            IconSource="{Binding HeadIconSource}"
+											IsExpanded="{Binding IsExpandable}"
+											IsVisible="{Binding IsExpandable}">
+											<fluent:SettingsExpander.Footer>
+												<TextBlock Text="{Binding MedalScore}"></TextBlock>
+											</fluent:SettingsExpander.Footer>
+											<ItemsRepeater x:DataType="vm:MissionDataV2Type2" ItemsSource="{Binding Games}">
+												<ItemsRepeater.Layout>
+													<StackLayout Spacing="8"></StackLayout>
+												</ItemsRepeater.Layout>
+												<ItemsRepeater.ItemTemplate>
+													<DataTemplate x:DataType="vm:MissionGameData">
+														<control:DmmGameExpander
+															Header="{Binding Name}"
+															Description="{Binding Genre}"
+															Description2="{Binding IsPlayedText}"
+															GameIcon="{Binding ImageData^}"
+															Action3="Bot"
+															Action3Label="{x:Static locale:Localization.ButtonEmuLaunch}"
+                                                            Action3Command="{Binding EmuLaunchCommand}">
+
+														</control:DmmGameExpander>
+													</DataTemplate>
+												</ItemsRepeater.ItemTemplate>
+											</ItemsRepeater>
+										</fluent:SettingsExpander>
+									</Panel>
+								</DataTemplate>
+							</ItemsRepeater.ItemTemplate>
+						</ItemsRepeater>
+					</StackPanel>
+				</DataTemplate>
+			</ItemsRepeater.ItemTemplate>
+		</ItemsRepeater>
+	</StackPanel>
+</UserControl>

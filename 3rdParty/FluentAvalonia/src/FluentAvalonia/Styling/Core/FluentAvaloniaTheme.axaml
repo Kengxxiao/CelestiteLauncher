@@ -1,0 +1,16 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="FluentAvalonia.Styling.FluentAvaloniaTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="SymbolThemeFontFamily">/Fonts/#FluentSystemIcons-Resizable</FontFamily>
+            <FontFamily x:Key="ContentControlThemeFontFamily">/Fonts/#MiSans</FontFamily>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Styling/StylesV2/Fluentv2Colors.axaml" />
+                <ResourceInclude Source="/Styling/StylesV2/Fluentv2.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="/Styling/ControlThemes/Controls.axaml" />
+</Styles>

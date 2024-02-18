@@ -1,0 +1,26 @@
+<fluent:AppWindow xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Celestite.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+        xmlns:fluent="using:FluentAvalonia.UI.Windowing"
+        xmlns:views="using:Celestite.Views"
+        xmlns:build="using:Celestite"
+
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="40"
+        WindowStartupLocation="CenterScreen"
+        
+        Width="1100"
+        Height="600"
+        
+        MinWidth="800"
+        MinHeight="600"
+		
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Celestite.Views.MainWindow"
+        Icon="{OnPlatform Windows=avares://Celestite.Desktop/Assets/celestite-icon.ico, Linux=/Assets/celestite-icon.png}">
+
+	<views:MainView></views:MainView>
+</fluent:AppWindow>

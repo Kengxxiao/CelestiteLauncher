@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Celestite.ViewModels.DefaultVM"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:locale="using:Celestite.I18N"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:LoginPageViewModel"
+             x:Class="Celestite.Pages.Default.LoginPage">
+	<UserControl.DataContext>
+		<vm:LoginPageViewModel></vm:LoginPageViewModel>
+	</UserControl.DataContext>
+	<ScrollViewer Padding="20 20 20 0">
+		<StackPanel Spacing="8">
+			<fluent:InfoBar
+                Severity="{Binding Severity}"
+                Title="{x:Static locale:Localization.InfoBarDefault}"
+                Message="{Binding InfoBarMessage}"
+                IsOpen="true"
+                IsClosable="False"
+                >
+
+			</fluent:InfoBar>
+			<TextBlock Text="{x:Static locale:Localization.LoginSubtitle}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+			<fluent:SettingsExpander
+                Header="{x:Static locale:Localization.DefaultLoginTitle}"
+                IconSource="PersonSwap"
+                Description="{x:Static locale:Localization.DefaultLoginDescription}"
+                IsClickEnabled="True"
+                ActionIconSource="ChevronRight"
+                Command="{Binding ShowDefaultLoginButtonCommand}"
+                IsEnabled="{Binding CanUseLoginButton}">
+
+			</fluent:SettingsExpander>
+			<fluent:SettingsExpander
+                Header="{x:Static locale:Localization.DGPLoginTitle}"
+                IconSource="Games"
+                Description="{x:Static locale:Localization.DGPLoginDescription}"
+                IsClickEnabled="True"
+                ActionIconSource="ChevronRight"
+                Command="{Binding ShowDmmLoginButtonCommand}">
+				<fluent:SettingsExpander.IsEnabled>
+					<MultiBinding Converter="{x:Static BoolConverters.And}">
+						<Binding Path="CanUseLoginButton"></Binding>
+						<Binding Path="IsDmmLoginEnabled"></Binding>
+					</MultiBinding>
+				</fluent:SettingsExpander.IsEnabled>
+
+			</fluent:SettingsExpander>
+			<TextBlock Text="{x:Static locale:Localization.RegisterSubtitle}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+			<fluent:SettingsExpander
+                Header="{x:Static locale:Localization.RegisterButtonTitle}"
+                IconSource="PersonAdd"
+                Description="{x:Static locale:Localization.RegisterButtonDescription}"
+                IsClickEnabled="True"
+                ActionIconSource="ChevronRight"
+                Command="{Binding ShowRegisterButtonCommand}"
+                IsEnabled="{Binding CanUseLoginButton}">
+
+			</fluent:SettingsExpander>
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

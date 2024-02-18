@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Celestite.ViewModels.Pages"
+             xmlns:locale="using:Celestite.I18N"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:ctrls="using:Celestite.Controls"
+             xmlns:converter="using:Celestite.Utils.Converters"
+             xmlns:dialog="using:Celestite.Dialogs.Games"
+             x:DataType="vm:DownloadManagerPageViewModel"
+             x:Class="Celestite.Pages.DownloadManagerPage">
+	<UserControl.Resources>
+		<converter:FileSizeConverter x:Key="FileSizeConverter"></converter:FileSizeConverter>
+	</UserControl.Resources>
+	<StackPanel Spacing="8">
+		<TextBlock Text="{x:Static locale:Localization.LeftNavDownloadManager}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<ItemsRepeater ItemsSource="{Binding Statistics}">
+			<ItemsRepeater.Layout>
+				<StackLayout Spacing="8"></StackLayout>
+			</ItemsRepeater.Layout>
+			<ItemsRepeater.ItemTemplate>
+				<DataTemplate x:DataType="vm:DownloadStatistic">
+					<ctrls:DmmGameExpander
+                        Header="{Binding Title}"
+                        GameIcon="{Binding Picture^}"
+						Description2="{Binding Speed, StringFormat='{}{0}/s', Converter={StaticResource FileSizeConverter}}"
+						UseProgress="True"
+						ProgressValue="{Binding Progress}"
+						Action1="Dismiss"
+						Action1Label="{x:Static locale:Localization.ButtonCancel}"
+						Action1Command="{Binding CancelDownloadTaskCommand}"
+						IsEnabled="{Binding IsDismissEnabled}"
+                        >
+						<ctrls:DmmGameExpander.Description>
+							<MultiBinding StringFormat="{}{0}/{1}">
+								<Binding Path="DownloadedBytes" Converter="{StaticResource FileSizeConverter}"></Binding>
+								<Binding Path="TotalBytes" Converter="{StaticResource FileSizeConverter}"></Binding>
+							</MultiBinding>
+						</ctrls:DmmGameExpander.Description>
+					</ctrls:DmmGameExpander>
+				</DataTemplate>
+			</ItemsRepeater.ItemTemplate>
+		</ItemsRepeater>
+	</StackPanel>
+</UserControl>

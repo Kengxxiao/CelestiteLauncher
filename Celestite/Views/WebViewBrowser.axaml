@@ -1,0 +1,75 @@
+<fluent:AppWindow xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 
+			 xmlns:ui="using:FluentAvalonia.UI.Controls"
+			 xmlns:fluent="using:FluentAvalonia.UI.Windowing"
+			 xmlns:nativeControls="using:Celestite.Controls.Native"
+			 xmlns:vm="using:Celestite.ViewModels.WebBrowser"
+			 
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Celestite.Views.WebViewBrowser"
+			 x:DataType="vm:WebBrowserViewModel"
+			 Title="{Binding SelectedTabData.Title}"
+		
+			WindowStartupLocation="CenterScreen"
+		Icon="{OnPlatform Windows=avares://Celestite.Desktop/Assets/celestite-icon.ico, Linux=/Assets/celestite-icon.png}"
+	>
+	<DockPanel>
+		<StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+			<ui:TabView
+				SelectedItem="{Binding SelectedTabData}"
+				x:Name="TabViewObj"
+				TabItems="{Binding BrowserTabs}"
+				AddTabButtonCommand="{Binding CreateNewTabCommand}"
+				TabCloseRequested="TabView_TabCloseRequested"
+				TabItemsChanged="TabView_TabItemsChanged"
+				TabDroppedOutside="TabView_TabDroppedOutside"
+				TabDragStarting="TabView_TabDragStarting"
+				TabStripDrop="TabView_TabStripDrop"
+				
+				AllowDropTabs="True"
+                CanReorderTabs="True"
+                CanDragTabs="True"
+				>
+				<ui:TabView.TabItemTemplate>
+					<DataTemplate x:DataType="vm:BrowserTab">
+						<ui:TabViewItem Header="{Binding Title}" IconSource="Document"
+										ToolTip.Tip="{Binding Title}"
+										/>
+					</DataTemplate>
+				</ui:TabView.TabItemTemplate>
+				<ui:TabView.TabStripFooter>
+					<Panel Name="CustomDragRegion" Background="Transparent" />
+				</ui:TabView.TabStripFooter>
+			</ui:TabView>
+			<DockPanel Background="{DynamicResource TabViewItemHeaderBackgroundSelected}" Height="36">
+				<!--{StaticResource TabViewItemHeaderBackgroundSelected}-->
+				<DockPanel.Styles>
+					<Style Selector="Button">
+						<Setter Property="Height" Value="32"></Setter>
+						<Setter Property="FontSize" Value="20"></Setter>
+						<Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"></Setter>
+					</Style>
+				</DockPanel.Styles>
+				<Button Theme="{StaticResource TransparentButton}" Command="{Binding GoBackCommand}" IsEnabled="{Binding SelectedTabData.CanGoBack, Mode=TwoWay}">
+					<ui:FontIcon Glyph="&#xE0ED;"></ui:FontIcon>
+				</Button>
+				<Button Theme="{StaticResource TransparentButton}" Command="{Binding GoForwardCommand}" IsEnabled="{Binding SelectedTabData.CanGoForawrd, Mode=TwoWay}">
+					<ui:FontIcon Glyph="&#xe115;"></ui:FontIcon>
+				</Button>
+				<Button Theme="{StaticResource TransparentButton}" Command="{Binding RefreshCommand}" IsEnabled="{Binding !SelectedTabData.ToReload, Mode=TwoWay}">
+					<ui:FontIcon Glyph="&#xe143;"></ui:FontIcon>
+				</Button>
+				<TextBox Height="32" Margin="5 0 10 0" AcceptsReturn="False" AcceptsTab="False" IsReadOnly="False"
+						 Text="{Binding SelectedTabData.Source}">
+					<TextBox.KeyBindings>
+						<KeyBinding Gesture="Enter" Command="{Binding NavigateCommand}"/>
+					</TextBox.KeyBindings>
+				</TextBox>
+			</DockPanel>
+		</StackPanel>
+		<nativeControls:WindowsWebView2Control x:Name="WebViewControl"></nativeControls:WindowsWebView2Control>
+	</DockPanel>
+</fluent:AppWindow>

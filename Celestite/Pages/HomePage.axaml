@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Celestite.ViewModels.Pages"
+             xmlns:locale="clr-namespace:Celestite.I18N"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+			 xmlns:icons="clr-namespace:FluentAvalonia.UI.Controls.IconElement;assembly=FluentAvalonia"
+			 xmlns:resp="using:Celestite.Network.Models"
+			 x:DataType="vm:HomePageViewModel"
+             x:Class="Celestite.Pages.HomePage">
+
+	<UserControl.DataContext>
+		<vm:HomePageViewModel></vm:HomePageViewModel>
+	</UserControl.DataContext>
+
+	<StackPanel Spacing="8">
+		<TextBlock Text="主页" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<Panel Height="400">
+			<Carousel DetachedFromVisualTree="Carousel_OnDetachedFromVisualTree" AttachedToVisualTree="Carousel_AttachedToVisualTree" x:Name="Slider" ItemsSource="{Binding Banners}" HorizontalAlignment="Stretch" >
+				<Carousel.PageTransition>
+					<CompositePageTransition>
+						<PageSlide Duration="0:00:00.100" Orientation="Horizontal" />
+					</CompositePageTransition>
+				</Carousel.PageTransition>
+				<Carousel.ItemTemplate>
+					<DataTemplate x:DataType="resp:ViewBannerRotationInfo">
+						<Image Source="{Binding Image^}"></Image>
+					</DataTemplate>
+				</Carousel.ItemTemplate>
+			</Carousel>
+			<Panel Margin="20">
+				<Button Click="SliderPrevious" Theme="{StaticResource TransparentButton}" Padding="8">
+					<Button.Content>
+						<icons:SymbolIcon Symbol="ChevronLeft" FontSize="18"></icons:SymbolIcon>
+					</Button.Content>
+				</Button>
+				<Button Click="SliderNext" HorizontalAlignment="Right" Theme="{StaticResource TransparentButton}" Padding="8">
+					<Button.Content>
+						<icons:SymbolIcon Symbol="ChevronRight" FontSize="18"></icons:SymbolIcon>
+					</Button.Content>
+				</Button>
+			</Panel>
+		</Panel>
+		<ItemsRepeater ItemsSource="{Binding AnnounceInfos}">
+			<ItemsRepeater.ItemTemplate>
+				<DataTemplate x:DataType="resp:AnnounceInfo">
+					<Expander Header="{Binding FormattedTitle}" Content="{Binding Content}">
+					</Expander>
+				</DataTemplate>
+			</ItemsRepeater.ItemTemplate>
+			<ItemsRepeater.Layout>
+				<StackLayout Spacing="8"></StackLayout>
+			</ItemsRepeater.Layout>
+		</ItemsRepeater>
+	</StackPanel>
+</UserControl>

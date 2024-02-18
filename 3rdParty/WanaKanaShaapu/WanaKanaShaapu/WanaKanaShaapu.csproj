@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <Company />
+    <Authors>kmoroz</Authors>
+    <Description>A C# implementation of WanaKana, a library for transliterating to and from Japanese</Description>
+    <PackageProjectUrl>https://github.com/kmoroz/WanaKanaShaapu</PackageProjectUrl>
+    <PackageIcon>wanikanilogo.png</PackageIcon>
+    <RepositoryUrl>https://github.com/kmoroz/WanaKanaShaapu</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>japanese wanikani wanakana tofugu hiragana katakana romaji kanji transliteration</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="wanikanilogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="wanikanilogo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

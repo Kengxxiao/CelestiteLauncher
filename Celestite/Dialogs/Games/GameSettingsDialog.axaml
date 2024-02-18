@@ -1,0 +1,206 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
+             xmlns:vm="using:Celestite.ViewModels.Dialogs"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:locale="using:Celestite.I18N"
+             x:DataType="vm:GameSettingsDialogViewModel"
+             x:Class="Celestite.Dialogs.Games.GameSettingsDialog">
+	<StackPanel Spacing="8">
+		<StackPanel Orientation="Horizontal" Spacing="8">
+			<Button
+                Content="&#xE3F8;"
+                Command="{Binding BackCommand}"
+                IsEnabled="{Binding IsBackEnabled}"
+                Theme="{StaticResource TransparentButton}"
+                FontFamily="{StaticResource SymbolThemeFontFamily}"></Button>
+			<TextBlock VerticalAlignment="Center" Text="{Binding GameData.Title}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		</StackPanel>
+		<TextBlock IsVisible="{Binding IsCl}"
+            Text="{x:Static locale:Localization.HeaderDMMGamesConfig}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<fluent:SettingsExpander
+            IsVisible="{Binding IsCl}"
+            IconSource="EyeOff"
+            Header="{x:Static locale:Localization.SettingsHideGame}"
+            Description="{x:Static locale:Localization.SettingsHideGameDesc}"
+            >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+					IsEnabled="{Binding GameData.EnableDmmGameOptions}"
+                    IsChecked="{Binding !GameData.IsView, Mode=TwoWay}"
+                    Command="{Binding UpdateIsViewOptionCommand}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            IsVisible="{Binding IsCl}"
+            IconSource="Pin"
+            Header="{x:Static locale:Localization.SettingsPin}"
+            Description="{x:Static locale:Localization.SettingsPinDesc}"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsEnabled="{Binding GameData.EnableDmmGameOptions}"
+                    IsChecked="{Binding GameData.IsFavorite, Mode=TwoWay}"
+                    Command="{Binding UpdateIsFavoriteOptionCommand}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderGameSettings}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<fluent:SettingsExpander
+            IconSource="Mail"
+            Header="{x:Static locale:Localization.SettingsNotification}"
+            Description="{x:Static locale:Localization.NotificationCheckbox}"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding DetailSetting.AllowNotification, Mode=TwoWay, FallbackValue=False}"
+                    Command="{Binding UpdateAllowNotificationCommand}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}">
+					<ToggleSwitch.IsEnabled>
+						<MultiBinding Converter="{x:Static BoolConverters.And}">
+							<MultiBinding.Bindings>
+								<Binding Path="DetailSetting" Converter="{x:Static ObjectConverters.IsNotNull}"></Binding>
+								<Binding Path="DetailSetting.IsShowSettings"></Binding>
+							</MultiBinding.Bindings>
+						</MultiBinding>
+					</ToggleSwitch.IsEnabled>
+				</ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            IconSource="NotepadPerson"
+            Header="{x:Static locale:Localization.SettingsInProfile}"
+            Description="{x:Static locale:Localization.InProfileAppCheckbox}"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding DetailSetting.IsShowInProfile, Mode=TwoWay, FallbackValue=False}"
+                    Command="{Binding UpdateShowInProfileCommand}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}">
+					<ToggleSwitch.IsEnabled>
+						<MultiBinding Converter="{x:Static BoolConverters.And}">
+							<MultiBinding.Bindings>
+								<Binding Path="DetailSetting" Converter="{x:Static ObjectConverters.IsNotNull}"></Binding>
+								<Binding Path="DetailSetting.IsShowSettings"></Binding>
+							</MultiBinding.Bindings>
+						</MultiBinding>
+					</ToggleSwitch.IsEnabled>
+				</ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<TextBlock  IsVisible="{Binding IsCl}"
+                    Text="{x:Static locale:Localization.HeaderStorage}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<fluent:SettingsExpander
+            IconSource="Search"  IsVisible="{Binding IsCl}"
+            Header="{x:Static locale:Localization.ActionCheckGameFiles}"
+            Description="{x:Static locale:Localization.ActionCheckGameFilesDesc}"
+            ActionIconSource="ChevronRight"
+            IsClickEnabled="True"
+            IsEnabled="{Binding ContentInstalled}"
+            Command="{Binding CheckGameFileListCommand}"
+        >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            IconSource="UninstallApp"  IsVisible="{Binding IsCl}"
+            Header="{x:Static locale:Localization.ActionUninstall}"
+            Description="{x:Static locale:Localization.ActionUninstallDesc}"
+            ActionIconSource="ChevronRight"
+            IsClickEnabled="True"
+            IsEnabled="{Binding ContentInstalled}"
+            Command="{Binding UninstallGameCommand}"
+        >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+	        IconSource="LinkSquare"  IsVisible="{Binding IsCl}"
+	        Header="{x:Static locale:Localization.ActionCreateShortcut}"
+	        Description="{x:Static locale:Localization.ActionCreateShortcutDesc}"
+	        ActionIconSource="ChevronRight"
+	        IsClickEnabled="True"
+	        IsEnabled="{Binding ContentInstalled}"
+	        Command="{Binding CreateShortcutCommand}"
+        >
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderProgramData}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<fluent:SettingsExpander
+	        IconSource="SearchInfo"
+	        Header="{x:Static locale:Localization.DataGameId}"
+	        Description="{Binding GameData.ProductId, Mode=OneTime}"
+        >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			IconSource="Bot"
+			Header="{x:Static locale:Localization.ButtonEmuLaunch}"
+			Description="{x:Static locale:Localization.ButtonEmuLaunchDesc}"
+			ActionIconSource="ChevronRight"
+			IsClickEnabled="True"
+			Command="{Binding EmulateLaunchCommand}"
+        >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			IconSource="Pin"
+			Header="{x:Static locale:Localization.CelestiteForcePin}"
+			Description="{x:Static locale:Localization.CelestiteForcePinDesc}"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding ForcePin, Mode=TwoWay, FallbackValue=False}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}">
+				</ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            IconSource="Code"
+            Header="{x:Static locale:Localization.ExtraCommandLine}"
+            Description="{Binding ExtraCommandLine}"
+            IsExpanded="True" IsVisible="{Binding IsCl}"
+        >
+			<TextBox Text="{Binding ExtraCommandLine}" MaxLength="128"></TextBox>
+			<fluent:SettingsExpanderItem>
+				<fluent:SettingsExpanderItem.Footer>
+					<Button Command="{Binding UpdateCommandLineCommand}" MinWidth="150" Content="{x:Static locale:Localization.UpdateExtraCommandLineButton}"></Button>
+				</fluent:SettingsExpanderItem.Footer>
+			</fluent:SettingsExpanderItem>
+		</fluent:SettingsExpander>
+		<!--fluent:SettingsExpander
+            IconSource="Wrench"
+			Header="跳过文件检查"
+			Description="不检查任何游戏文件的完整性，只检查版本号"
+            >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+					IsChecked="{Binding ForceSkipFileCheck}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander-->
+		<fluent:SettingsExpander
+            IconSource="DocumentOnePage"
+			IsVisible="{Binding IsCl}"
+            Header="{x:Static locale:Localization.LocateDownloadedGameExe}"
+            Description="{x:Static locale:Localization.LocateDownloadedGameExeDescription}"
+			IsClickEnabled="True"
+			Command="{Binding UseGameFilesOnDiskCommand}"
+			ActionIconSource="ChevronRight"
+        >
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderDangerousAction}" Theme="{StaticResource SubtitleTextBlockStyle}" Margin="0, 8"></TextBlock>
+		<fluent:SettingsExpander
+            IconSource="Delete"
+            Header="{x:Static locale:Localization.ButtonRemoveGame}"
+            Description="{x:Static locale:Localization.ButtonRemoveGameDesc}"
+            ActionIconSource="ChevronRight"
+            IsClickEnabled="True"
+            Command="{Binding RemoveGameCommand}"
+        >
+		</fluent:SettingsExpander>
+	</StackPanel>
+</UserControl>

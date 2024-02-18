@@ -1,0 +1,244 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="2000"
+             xmlns:vm="using:Celestite.ViewModels.Pages"
+             xmlns:converter="using:Celestite.Utils.Converters"
+             xmlns:locale="clr-namespace:Celestite.I18N"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:utils="using:Celestite.Utils"
+			 xmlns:dialog="using:Celestite.Dialogs"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="Celestite.Pages.SettingsPage">
+
+	<UserControl.Resources>
+		<converter:FileSizeConverter x:Key="FileSizeConverter"></converter:FileSizeConverter>
+	</UserControl.Resources>
+	<UserControl.DataContext>
+		<vm:SettingsViewModel></vm:SettingsViewModel>
+	</UserControl.DataContext>
+	<StackPanel Spacing="8">
+		<TextBlock
+				   Text="{x:Static locale:Localization.WindowsHandleSettings}" Theme="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+		<fluent:SettingsExpander Header="{x:Static locale:Localization.HeaderLanguage}"
+                                  Description="{x:Static locale:Localization.HeaderLanguageDescription}"
+                                  IconSource="Earth"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ComboBox ItemsSource="{Binding SupportedLanguage}" SelectedValue="{Binding LanguageCode}" SelectedValueBinding="{Binding (vm:LocaleObject).LocaleCode}" DisplayMemberBinding="{Binding (vm:LocaleObject).Name}">
+				</ComboBox>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander  IsVisible="{OnPlatform False, Windows=True}"
+                                  Header="{x:Static locale:Localization.UseMica}"
+                                  Description="{x:Static locale:Localization.UseMicaDesc}"
+                                  IconSource="StyleGuide"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+					IsChecked="{Binding UseMica}"
+					OffContent="{x:Static locale:Localization.ToggleOff}"
+					OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander  IsVisible="{OnPlatform False, Windows=True}"
+								  Header="{x:Static locale:Localization.UseAcrylic}"
+								  Description="{x:Static locale:Localization.UseAcrylicDesc}"
+								  IconSource="StyleGuide"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+					IsChecked="{Binding UseAcrylic}"
+					OffContent="{x:Static locale:Localization.ToggleOff}"
+					OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<TextBlock IsVisible="{OnPlatform False, Linux=True, macOS=True}"
+				   Text="{x:Static locale:Localization.NonWindowsCompatibleLayer}" Theme="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+		<fluent:SettingsExpander
+			IsVisible="{OnPlatform False, Linux=True, macOS=True}"
+			Header="{x:Static locale:Localization.NonWindowsCompatibleLayerExecutable}"
+			Description="{Binding WinePath}"
+			IconSource="Compose"
+			Command="{Binding OpenWinePathFinderCommand}"
+			IsClickEnabled="True"
+			ActionIconSource="Edit"
+        >
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderAccount}" Theme="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.ButtonExitLogin}"
+			Description="{x:Static locale:Localization.ButtonExitLoginDesc}"
+			IconSource="PersonDelete"
+			Command="{Binding LogoutCommand}"
+			IsClickEnabled="True"
+			ActionIconSource="ChevronRight"
+        >
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderBehaviour}" Theme="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.ToggleApi}"
+			Description="{x:Static locale:Localization.ToggleApiDesc}"
+			IconSource="ProtocolHandler"
+            >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+					IsChecked="{Binding IsAdult}"
+					Command="{Binding ChangeAdultModeCommand}"
+					OffContent="DMM"
+					OnContent="FANZA"
+                        ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander IsVisible="{OnPlatform Windows=True, Linux=False}"
+            Header="{x:Static locale:Localization.EnableEmbeddedWebView}"
+            Description="{x:Static locale:Localization.EnableEmbeddedWebViewDescription}"
+            IconSource="ContentViewGallery"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding EnableEmbeddedWebView}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            Header="{x:Static locale:Localization.DisableIFrameEx}"
+            Description="{x:Static locale:Localization.DisableIFrameExDescription}"
+            IconSource="DocumentSplitHintOff"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding DisableIFrameEx}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            Header="{x:Static locale:Localization.ToggleHimariProxy}"
+            Description="{x:Static locale:Localization.ToggleHimariProxyDescription}"
+            IconSource="NetworkCheck"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding HimariProxy}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+            Header="{x:Static locale:Localization.ToggleDisableProxy}"
+            Description="{x:Static locale:Localization.ToggleDisableProxyDescription}"
+            IconSource="WifiOff"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding BanSystemProxy}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.HardwareRegDialogTitle}"
+			Description="{x:Static locale:Localization.HardwareRegDesc}"
+			IconSource="LockShield"
+			IsExpanded="True"
+            >
+			<fluent:SettingsExpanderItem>
+				<StackPanel Spacing="8">
+					<RadioButton
+						IsChecked="{Binding IsDeviceAuthAll}"
+						Command="{Binding ChangeDeviceAuthenticationCommand}"
+						Content="{x:Static locale:Localization.OptionHardwareRegAll}"></RadioButton>
+					<RadioButton
+						IsChecked="{Binding !IsDeviceAuthAll}"
+						Command="{Binding ChangeDeviceAuthenticationCommand}"
+						Content="{x:Static locale:Localization.OptionHardwareRegNotAll}"></RadioButton>
+					<Button MinWidth="150" Content="{x:Static locale:Localization.HardwareRejectTitle}"
+							Command="{Binding OpenHardwareListCommand}"
+                                ></Button>
+				</StackPanel>
+			</fluent:SettingsExpanderItem>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.CloseBehaviour}"
+			Description="{x:Static locale:Localization.CloseBehaviourDesc}"
+			IconSource="Dismiss"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+					IsChecked="{Binding MinimizeToTray, Mode=TwoWay}"
+					OffContent="{x:Static locale:Localization.ToggleCloseDirectly}"
+					OnContent="{x:Static locale:Localization.ToggleHideToTray}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderStorage}" Theme="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.SettingsAppConfigFolder}"
+			Description="{x:Static utils:ConfigUtils.CelestiteAppConfigFolder}"
+			IconSource="Folder"
+            >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.SettingsImageCache}"
+			Description="{Binding PictureCacheSize, StringFormat={x:Static locale:Localization.SettingHttpCacheUsed}, Converter={StaticResource FileSizeConverter}}"
+			IconSource="Image"
+			IsClickEnabled="True"
+			ActionIconSource="ArrowSync"
+			Command="{Binding UpdateCacheSizeCommand}"
+            >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.SettingsDefaultGameFolder}"
+			Description="{Binding DefaultGameInstallFolder}"
+			IconSource="AppFolder"
+			Command="{Binding SetDefaultGameFolderCommand}"
+			IsClickEnabled="True"
+			ActionIconSource="Edit"
+            >
+		</fluent:SettingsExpander>
+		<TextBlock Text="{x:Static locale:Localization.HeaderAbout}" Theme="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+		<fluent:SettingsExpander
+			Header="Celestite"
+			Description="{Binding BuildData}"
+			IconSource="BranchFork"
+                >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			Header="反馈平台"
+			Description="交流群: 897253904"
+			IconSource="Chat"
+                >
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.AboutEnvInformation}"
+			Description="{x:Static locale:Localization.AboutEnvInformationDesc}"
+			IconSource="Info"
+            >
+			<fluent:SettingsExpanderItem
+				Content="{x:Static locale:Localization.EnvHddSerial}"
+				Description="{x:Static utils:SystemInfoUtils.HddSerial}"
+                ></fluent:SettingsExpanderItem>
+			<fluent:SettingsExpanderItem
+				Content="{x:Static locale:Localization.EnvMacAddress}"
+				Description="{x:Static utils:SystemInfoUtils.MacAddress}"
+                ></fluent:SettingsExpanderItem>
+			<fluent:SettingsExpanderItem
+				Content="{x:Static locale:Localization.EnvMotherboard}"
+				Description="{x:Static utils:SystemInfoUtils.Motherboard}"
+                ></fluent:SettingsExpanderItem>
+			<fluent:SettingsExpanderItem
+				Content="{x:Static locale:Localization.EnvProtocolVersion}"
+				Description="{x:Static utils:SystemInfoUtils.RequestHeaderUserAgentName}"
+                ></fluent:SettingsExpanderItem>
+		</fluent:SettingsExpander>
+	</StackPanel>
+</UserControl>

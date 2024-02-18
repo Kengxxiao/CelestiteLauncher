@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
+    One for Windows with net7.0-windows TFM, one for MacOS with net7.0-macos and one with net7.0 TFM for Linux.-->
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PublishAot>False</PublishAot>
+    <Trimming></Trimming>
+    <EnablePreviewFeatures>True</EnablePreviewFeatures>
+    <ApplicationIcon>Assets\celestite-icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
+    <AssemblyName>Celestite.DesktopExe</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <Content Include="Assets\celestite-icon.ico" />
+    <AvaloniaResource Include="Assets\celestite-icon.ico" />
+  </ItemGroup>
+
+	<ItemGroup>
+    	<RdXmlFile Include="rd.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
+    <PackageReference Include="R3Extensions.Avalonia" Version="0.1.20" />
+    <PackageReference Include="ZeroLog" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('win'))">
+    <DirectPInvoke Include="Carleen" />
+    <NativeLibrary Include="..\3rdParty\WebView2LoaderStatic.lib" />
+    <NativeLibrary Include="..\3rdParty\Carleen.lib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Celestite\Celestite.csproj" />
+  </ItemGroup>
+</Project>
