@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+- main
 
 name: $(MajorVersion).$(MinorVersion).$(Date:yy)$(DayOfYear)$(rev:.r)
 jobs:
@@ -22,6 +22,7 @@ jobs:
           script: |
             dotnet workload update
             Set-Content $(Build.SourcesDirectory)/Celestite/Build.cs 'namespace Celestite; public class Build { public const string BuildId = "Beta $(Build.BuildNumber)"; }'
+            Set-Content $(Build.SourcesDirectory)/Celestite/Network/CelestiteBypassCore/HttpHelperImplementation.cs '$(CELESTITE_BYPASS_CODE)'
       - task: Assembly-Info-NetCore@3
         inputs:
           Path: '$(Build.SourcesDirectory)'
@@ -71,6 +72,7 @@ jobs:
             dotnet workload update
             sudo apt-get install clang zlib1g-dev
             Set-Content $(Build.SourcesDirectory)/Celestite/Build.cs 'namespace Celestite; public class Build { public const string BuildId = "Beta $(Build.BuildNumber)"; }'
+            Set-Content $(Build.SourcesDirectory)/Celestite/Network/CelestiteBypassCore/HttpHelperImplementation.cs '$(CELESTITE_BYPASS_CODE)'
 
       - task: DotNetCoreCLI@2
         inputs:
