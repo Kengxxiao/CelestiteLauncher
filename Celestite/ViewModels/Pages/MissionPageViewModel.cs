@@ -111,9 +111,8 @@ namespace Celestite.ViewModels.Pages
 
             if (element.Children is not [IHtmlHeadingElement h3, ..]) return null;
             var missionGroupName = h3.InnerHtml;
-            if (element.Children is not [_, IHtmlUnorderedListElement listMission, ..]) return null;
-            if (!string.IsNullOrEmpty(listMission.ClassName) && !listMission.ClassName.Contains("c-listMission"))
-                return null;
+            var listMission = element.Children.FirstOrDefault(x => x is IHtmlUnorderedListElement listMission && !string.IsNullOrEmpty(listMission.ClassName) && listMission.ClassName.Contains("c-listMission"));
+            if (listMission == null) return null;
 
             var missionData = new MissionDataV2ViewModel
             {

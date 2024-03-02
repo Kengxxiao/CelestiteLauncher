@@ -51,12 +51,9 @@ jobs:
           projects: '$(Build.SourcesDirectory)/Celestite.Desktop/Celestite.Desktop.csproj'
           arguments: '/p:StripSymbols=true /p:Configuration=Release /p:SelfContained=true /p:PublishTrimmed=true /p:PublishAot=true /p:RuntimeIdentifier=win-x64 /p:DebugType=None /p:DebugSymbols=false --output $(Build.ArtifactStagingDirectory)/Celestite_Windows_$(Build.BuildNumber)'
           modifyOutputPath: false
-
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Celestite_Windows_$(Build.BuildNumber)'
-          ArtifactName: 'Celestite_Windows_$(Build.BuildNumber)'
-          publishLocation: 'Container'
+      - publish: '$(Build.ArtifactStagingDirectory)/Celestite_Windows_$(Build.BuildNumber)'
+        displayName: 'Publish Windows version'
+        artifact: 'windows'
   - job: BuildLinuxVersion
     pool:
       vmImage: ubuntu-latest
@@ -73,7 +70,6 @@ jobs:
             sudo apt-get install clang zlib1g-dev
             Set-Content $(Build.SourcesDirectory)/Celestite/Build.cs 'namespace Celestite; public class Build { public const string BuildId = "Beta $(Build.BuildNumber)"; }'
             Set-Content $(Build.SourcesDirectory)/Celestite/Network/CelestiteBypassCore/HttpHelperImplementation.cs '$(CELESTITE_BYPASS_CODE)'
-
       - task: DotNetCoreCLI@2
         inputs:
           command: 'publish'
@@ -81,9 +77,28 @@ jobs:
           projects: '$(Build.SourcesDirectory)/Celestite.Desktop/Celestite.Desktop.csproj'
           arguments: '/p:StripSymbols=true /p:Configuration=Release /p:SelfContained=true /p:PublishTrimmed=true /p:PublishAot=true /p:RuntimeIdentifier=linux-x64 /p:DebugType=None /p:DebugSymbols=false --output $(Build.ArtifactStagingDirectory)/Celestite_Linux_$(Build.BuildNumber)'
           modifyOutputPath: false
-
-      - task: PublishBuildArtifacts@1
+      - publish: '$(Build.ArtifactStagingDirectory)/Celestite_Linux_$(Build.BuildNumber)'
+        displayName: 'Publish Linux version'
+        artifact: 'linux'
+  - job: GithubRelease
+    dependsOn:
+      - BuildWindowsVersion
+      - BuildLinuxVersion
+    steps:
+      - download: current
+        artifact: windows
+      - download: current
+        artifact: linux
+      - task: GitHubRelease@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/Celestite_Linux_$(Build.BuildNumber)'
-          ArtifactName: 'Celestite_Linux_$(Build.BuildNumber)'
-          publishLocation: 'Container'
+          gitHubConnection: 'github.com_Kengxxiao'
+          repositoryName: 'Kengxxiao/CelestiteLauncher'
+          action: 'create'
+          target: '$(Build.SourceVersion)'
+          tagSource: 'gitTag'
+          title: '$(Build.BuildNumber)'
+          changeLogCompareToRelease: 'lastFullRelease'
+          changeLogType: 'commitBased'
+          assets: |
+            $(Pipeline.Workspace)/linux/*.zip
+            $(Pipeline.Workspace)/windows/*.zip

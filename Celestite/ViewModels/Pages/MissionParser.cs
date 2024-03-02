@@ -390,10 +390,12 @@ namespace Celestite.ViewModels.Pages
                                 Children: [IHtmlSpanElement isPlayed]
                             }])
                             gameData.IsPlayedText = isPlayed.TextContent.Trim();
-                        if (missionData.Title.Contains("PLAYER"))
-                            gameData.GameType = "PLAYER";
-                        else if (missionData.Title.Contains("PC"))
-                            gameData.GameType = "PC";
+                        gameData.GameType = gameData.Image.Split('/') switch
+                        {
+                            [.., "client", _, _] => "PLAYER",
+                            [.., "app", _, _] => "PC",
+                            _ => gameData.GameType
+                        };
                     }
                     missionData.Games.Add(gameData);
                 }
