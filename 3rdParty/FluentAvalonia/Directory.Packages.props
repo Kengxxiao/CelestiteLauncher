@@ -6,12 +6,12 @@
     <AvaloniaVersion>11.0.4</AvaloniaVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="11.0.9" />
-    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="11.0.9" />
-    <PackageVersion Include="Avalonia.Controls.ItemsRepeater" Version="11.0.9" />
-    <PackageVersion Include="Avalonia.Skia" Version="11.0.9" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.0.9" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.0.9" />
+    <PackageVersion Include="Avalonia" Version="11.0.10" />
+    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="11.0.10" />
+    <PackageVersion Include="Avalonia.Controls.ItemsRepeater" Version="11.0.10" />
+    <PackageVersion Include="Avalonia.Skia" Version="11.0.10" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.0.10" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.0.10" />
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.iOS" Version="$(AvaloniaVersion)" />

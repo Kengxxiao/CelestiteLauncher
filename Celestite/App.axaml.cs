@@ -18,7 +18,6 @@ public partial class App : Application
     public override void Initialize()
     {
         CommandLineHelper.RegisterUriScheme();
-        CommandLineHelper.CreatePipe();
         ModeDetector.OverrideModeDetector(Mode.Run);
         Log.Info("Preparing for Avalonia env");
         ConfigUtils.Init();

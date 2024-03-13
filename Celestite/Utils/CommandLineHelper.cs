@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Platform;
 using Celestite.Network;
 using Celestite.Network.Models;
+using CommandLine;
 using Cysharp.Threading.Tasks;
 using IniParser;
 using Microsoft.Win32;
 
 namespace Celestite.Utils
 {
-    public class CommandLineHelper
+    public partial class CommandLineHelper
     {
         private static bool _created;
         public static void RegisterUriScheme()
@@ -87,7 +91,6 @@ namespace Celestite.Utils
 
             UniTask.Run(async () =>
             {
-
                 await using var pipeSever = new NamedPipeServerStream($"{Environment.UserName}_celestite", PipeDirection.In);
                 do
                 {
@@ -124,13 +127,20 @@ namespace Celestite.Utils
 
         public static async UniTask ParseCommandLine(string cmd)
         {
-            var commandLine = cmd.Split(' ');
-            var args = ParseArguments(commandLine);
-            if (args.TryGetValue("scheme", out var scheme))
+            var commands = cmd.Split(' ');
+            var parserResult = await Parser.Default.ParseArguments<LaunchCommandLine>(commands)
+                .WithParsedAsync(async (c) => await LaunchCall(c));
+            if (string.IsNullOrEmpty(parserResult.Value.Scheme) && string.IsNullOrEmpty(parserResult.Value.ProductId) && string.IsNullOrEmpty(parserResult.Value.GameType))
+                WindowTrayHelper.RequestShow();
+        }
+
+        private static async Task LaunchCall(LaunchCommandLine launchCommandLine)
+        {
+            if (!string.IsNullOrEmpty(launchCommandLine.Scheme))
             {
                 try
                 {
-                    var uri = new Uri(scheme);
+                    var uri = new Uri(launchCommandLine.Scheme);
                     if (uri.Authority is "launch" or "emulaunch")
                     {
                         var param = uri.AbsolutePath.Split('/');
@@ -148,43 +158,123 @@ namespace Celestite.Utils
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // ignored
+                    Console.WriteLine($"Failed to parse scheme. {e.Message}");
                 }
+                return;
             }
-            else if (args.TryGetValue("productId", out var productId) && args.TryGetValue("type", out var type))
+
+            if (!string.IsNullOrEmpty(launchCommandLine.ProductId) && !string.IsNullOrEmpty(launchCommandLine.GameType))
             {
                 try
                 {
-                    var typeEnum = TApiGameTypeExtension.FromString(type);
-                    await LaunchHelper.LaunchGame(productId, typeEnum);
+                    var typeEnum = TApiGameTypeExtension.FromString(launchCommandLine.GameType);
+                    await LaunchHelper.LaunchGame(launchCommandLine.ProductId, typeEnum);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // ignored
+                    Console.WriteLine($"Failed to parse productId and gameType. {e.Message}");
                 }
+            }
+        }
+
+        private static async Task<bool> NoGuiLogin(LaunchCommandLine launchCommandLine)
+        {
+            string? userId;
+            if (!string.IsNullOrEmpty(launchCommandLine.Username) && !string.IsNullOrEmpty(launchCommandLine.Password))
+            {
+                var login = await DmmOpenApiHelper.Login(launchCommandLine.Username, launchCommandLine.Password);
+                if (login.Failed)
+                    return false;
+                var accessToken = await DmmOpenApiHelper.ExchangeAccessToken(login.Value.AccessToken);
+                if (accessToken.Failed)
+                    return false;
+                if (!JwtUtils.TryParseIdToken(login.Value.IdToken, out var idToken) || string.IsNullOrEmpty(idToken?.UserId))
+                    return false;
+                userId = idToken.UserId;
             }
             else
             {
-                WindowTrayHelper.RequestShow();
+                if (ConfigUtils.TryGetLastLogin(out var accountObject) && accountObject!.AutoLogin)
+                {
+                    DmmOpenApiHelper.UpdateRefreshToken(accountObject!.RefreshToken);
+                    var login = await DmmOpenApiHelper.RefreshToken();
+                    if (login.Failed)
+                        return false;
+                    accountObject.RefreshToken = login.Value.RefreshToken;
+                    ConfigUtils.PushAccountObject(accountObject);
+                }
+                else
+                {
+                    Console.WriteLine("Cannot find valid login session on Celestite save state, use --username and --password to login or do that in GUI mode.");
+                    return false;
+                }
+                userId = accountObject.UserId;
             }
-        }
 
-        private static Dictionary<string, string> ParseArguments(IReadOnlyList<string> args)
-        {
-            var arguments = new Dictionary<string, string>();
-
-            for (var i = 0; i < args.Count; i++)
+            if (string.IsNullOrEmpty(userId))
             {
-                if (!args[i].StartsWith("--") || i + 1 >= args.Count) continue;
-                var key = args[i][2..];
-                var value = args[i + 1];
-                arguments[key] = value;
-                i++;
+                Console.WriteLine("Invalid userId.");
+                return false;
             }
-
-            return arguments;
+            var loginSession = await DmmOpenApiHelper.IssueSessionId(userId);
+            if (loginSession.Failed)
+                return false;
+            DmmGamePlayerApiHelper.SetUserCookies(loginSession.Value.SecureId, loginSession.Value.UniqueId);
+            DmmGamePlayerApiHelper.SetAgeCheckDone();
+            return true;
         }
+
+        [LibraryImport("kernel32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool AttachConsole(int dwProcessId);
+
+        public static async Task<bool> ParseLaunchCommand(params string[] args)
+        {
+            ConfigUtils.Init();
+            var parserResult = await Parser.Default.ParseArguments<LaunchCommandLine>(args)
+                .WithParsedAsync(async (cmd) =>
+                {
+                    if (cmd.NoGui)
+                    {
+                        if (OperatingSystem.IsWindows()) AttachConsole(-1);
+                        if (string.IsNullOrEmpty(cmd.Scheme) && (string.IsNullOrEmpty(cmd.ProductId) || string.IsNullOrEmpty(cmd.GameType)))
+                        {
+                            Console.WriteLine("Invalid game launch arguments.");
+                            return;
+                        }
+                        if (await NoGuiLogin(cmd))
+                            await LaunchCall(cmd);
+                    }
+                    else if (SingletonInstanceHelper.IsRunning())
+                    {
+                        using var pipeClient = new NamedPipeClientStream(".", $"{Environment.UserName}_celestite", PipeDirection.Out);
+                        pipeClient.Connect();
+                        var bytes = Encoding.UTF8.GetBytes(Environment.CommandLine);
+                        pipeClient.Write(bytes, 0, bytes.Length);
+                        Environment.Exit(0);
+                        return;
+                    }
+                });
+            if (parserResult.Errors.Any()) return false;
+            return !parserResult.Value.NoGui;
+        }
+    }
+
+    public class LaunchCommandLine
+    {
+        [Option('s', "scheme", Required = false)]
+        public string Scheme { get; set; } = string.Empty;
+        [Option('u', "username", Required = false)]
+        public string Username { get; set; } = string.Empty;
+        [Option('p', "password", Required = false)]
+        public string Password { get; set; } = string.Empty;
+        [Option('i', "productId", Required = false)]
+        public string ProductId { get; set; } = string.Empty;
+        [Option('t', "type", Required = false)]
+        public string GameType { get; set; } = string.Empty;
+        [Option('n', "nogui", Required = false)]
+        public bool NoGui { get; set; }
     }
 }

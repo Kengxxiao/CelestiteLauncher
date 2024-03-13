@@ -24,47 +24,62 @@ namespace Celestite.Utils
 
         private static void EnsureNotification()
         {
-            if (_notificationManager == null)
+            if (LaunchHelper.IsInGuiMode() && _notificationManager == null)
                 Init();
         }
 
         public static void Info(string message)
         {
             EnsureNotification();
-            Dispatcher.UIThread.Invoke(() =>
+            if (_notificationManager != null)
+                Dispatcher.UIThread.Invoke(() =>
                 _notificationManager!.Show(new Notification(Localization.InfoBarDefault, message)));
+            else
+                Console.WriteLine(message);
         }
 
         public static void Error(string message)
         {
             WindowTrayHelper.RequestShow();
             EnsureNotification();
-            Dispatcher.UIThread.Invoke(() =>
-                _notificationManager!.Show(new Notification(Localization.InfoBarError, message, NotificationType.Error)));
+            if (_notificationManager != null)
+                Dispatcher.UIThread.Invoke(() =>
+                    _notificationManager!.Show(new Notification(Localization.InfoBarError, message, NotificationType.Error)));
+            else
+                Console.WriteLine(message);
         }
 
         public static void Warn(string message)
         {
             WindowTrayHelper.RequestShow();
             EnsureNotification();
-            Dispatcher.UIThread.Invoke(() =>
+            if (_notificationManager != null)
+                Dispatcher.UIThread.Invoke(() =>
                 _notificationManager!.Show(new Notification(Localization.InfoBarDefault, message, NotificationType.Warning)));
+            else
+                Console.WriteLine(message);
         }
 
         public static void Warn(string message, Action clickAction)
         {
             WindowTrayHelper.RequestShow();
             EnsureNotification();
-            Dispatcher.UIThread.Invoke(() =>
+            if (_notificationManager != null)
+                Dispatcher.UIThread.Invoke(() =>
                 _notificationManager!.Show(new Notification(Localization.InfoBarDefault, message, NotificationType.Warning, onClick: clickAction)));
+            else
+                Console.WriteLine(message);
         }
 
         public static void Success(string message)
         {
             WindowTrayHelper.RequestShow();
             EnsureNotification();
-            Dispatcher.UIThread.Invoke(() =>
+            if (_notificationManager != null)
+                Dispatcher.UIThread.Invoke(() =>
                 _notificationManager!.Show(new Notification(Localization.InfoBarDefault, message, NotificationType.Success)));
+            else
+                Console.WriteLine(message);
         }
     }
 }

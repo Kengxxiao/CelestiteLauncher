@@ -14,6 +14,7 @@ using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Authentication;
 using System.Security.Cryptography;
@@ -104,10 +105,9 @@ namespace Celestite.Network
 
         private static X509Certificate2[] GenerateCertificates()
         {
-            using var caCertDataStream =
-                AssetLoader.Open(new Uri("avares://Celestite/Assets/Cert/cacert.pem"));
-            using var brotli = new BrotliStream(caCertDataStream, CompressionMode.Decompress);
-            using var binaryReader = new BinaryReader(brotli);
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Celestite.Assets.Cert.cacert.pem")!;
+            using var brotliStream = new BrotliStream(stream, CompressionMode.Decompress);
+            using var binaryReader = new BinaryReader(brotliStream);
             var set = new X509Certificate2[145];
 
             for (var i = 0; i < 145; i++)
@@ -119,7 +119,6 @@ namespace Celestite.Network
                     continue;
                 set[i] = new X509Certificate2(cert);
             }
-
             return set;
         }
 

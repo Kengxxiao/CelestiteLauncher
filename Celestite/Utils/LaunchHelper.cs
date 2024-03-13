@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Celestite.I18N;
 using Celestite.Network;
 using Celestite.Network.Downloader;
@@ -9,14 +11,13 @@ using Celestite.Network.Models;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using FluentAvalonia.UI.Controls;
-using ZeroLog;
 
 namespace Celestite.Utils
 {
     public class LaunchHelper
     {
-        private static readonly Log Logger = LogManager.GetLogger("LaunchHelper");
         public record ProductIdWithType(string ProductId, TApiGameType Type);
+        public static bool IsInGuiMode() => Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime a && a.MainWindow != null;
         public static async UniTask<ProductIdWithType?> TransformDmmAppIdToProductId(string appId, bool adult, string gameTypeRequired = "PC")
         {
             var hermesData = await DmmHermesHelper.GetGameList(adult, gameTypeRequired);
@@ -117,6 +118,11 @@ namespace Celestite.Utils
                     if (installCl.Failed) return;
                     clInfo = installCl.Value;
 
+                    if (!IsInGuiMode())
+                    {
+                        Console.WriteLine("Download required, cannot process it in console mode.");
+                        return;
+                    }
                     (launchAfterUpdate, createShortcutAfterUpdate, ContentDialogResult result) = await KashimaDownloadManager.OpenInstallDialog(clInfo);
                     if (result != ContentDialogResult.Primary) return;
 
@@ -127,6 +133,11 @@ namespace Celestite.Utils
                     }
                 }
 
+                if (!IsInGuiMode())
+                {
+                    Console.WriteLine("Download required, cannot process it in console mode.");
+                    return;
+                }
                 packageImageUrl ??= ZString.Format("https://pics.dmm.com/digital/gameplayer/{0}/{0}pt.jpg", productId);
 
                 KashimaDownloadManager.PushDownloadInfo(clInfo, type, ConfigUtils.DmmGamesDefaultInstallFolder, packageImageUrl, nextOpenUpdateWindow,

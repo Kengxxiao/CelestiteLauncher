@@ -23,6 +23,7 @@ namespace Celestite.Utils
         private static LauncherConfig _config = new();
         private static DmmGameCnf _dmmGameCnf = new();
         private static string _dmmConfigFile = string.Empty;
+        private static bool _initialized = false;
 #if DEBUG
         private const bool DebugMode = true;
 #else
@@ -160,6 +161,9 @@ namespace Celestite.Utils
 
         public static void Init()
         {
+            if (_initialized) return;
+            _initialized = true;
+
             if (!Directory.Exists(CelestiteAppConfigFolder))
                 Directory.CreateDirectory(CelestiteAppConfigFolder);
             if (!Directory.Exists(Dgp5ConfigFilePath))

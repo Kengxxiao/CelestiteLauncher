@@ -93,7 +93,7 @@ namespace Celestite.Utils
         {
             if (Uri.TryCreate(link, new UriCreationOptions(), out var uri) && uri.Scheme is not "http" && uri.Scheme is not "https")
                 forceExternal = true;
-            if (ConfigUtils.GetEnableEmbeddedWebView() && !forceExternal)
+            if (LaunchHelper.IsInGuiMode() && ConfigUtils.GetEnableEmbeddedWebView() && !forceExternal)
             {
                 WebBrowserViewModel.OpenBrowser(link);
                 return;

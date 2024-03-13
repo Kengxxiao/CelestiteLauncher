@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO.Pipes;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime;
-using System.Text;
 using Avalonia;
 using Celestite.Utils;
 using ZeroLog;
@@ -19,17 +18,11 @@ internal class Program
     private static Log Logger { get; set; } = null!;
 
     [STAThread]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(LaunchCommandLine))]
     public static void Main(string[] args)
     {
-        if (SingletonInstanceHelper.IsRunning())
-        {
-            using var pipeClient = new NamedPipeClientStream(".", $"{Environment.UserName}_celestite", PipeDirection.Out);
-            pipeClient.Connect();
-            var bytes = Encoding.UTF8.GetBytes(Environment.CommandLine);
-            pipeClient.Write(bytes, 0, bytes.Length);
-            Environment.Exit(0);
-            return;
-        }
+        if (!CommandLineHelper.ParseLaunchCommand(args).GetAwaiter().GetResult()) return;
+        CommandLineHelper.CreatePipe();
         GCSettings.LatencyMode = GCLatencyMode.LowLatency;
         LogManager.Initialize(new ZeroLogConfiguration
         {
