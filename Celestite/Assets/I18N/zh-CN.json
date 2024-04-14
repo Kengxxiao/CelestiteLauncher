@@ -255,5 +255,8 @@
   "DisableIFrameExDescription": "在启动浏览器游戏时直接使用原始页面而不是提取其中游戏部分的iframe。\n※ 直接打开提取的游戏页面无需通过DMM区域检查，但原始页面需要。Celestite使用这种方式来规避浏览器游戏的DMM区域检查。\n※ Celestite的内置浏览器不会在原始页面触发DMM区域检查。",
   "MissionExchangePoint": "兑换点数",
 
-  "HigherWebView2VersionRequired": "要使用 Celestite 内置浏览器，请升级 Microsoft Edge WebView2 到版本 120.0.2210.55 及以上。点击提示前往下载页面。"
+  "HigherWebView2VersionRequired": "要使用 Celestite 内置浏览器，请升级 Microsoft Edge WebView2 到版本 120.0.2210.55 及以上。点击提示前往下载页面。",
+
+  "SafeFanzaIcon": "启用安全的 FANZA 游戏图标",
+  "SafeFanzaIconDesc": "※ 这项功能会在当游戏列表中有来自FANZA的游戏时模糊化游戏图标。\n※ 需要重新获取游戏列表。"
 }

@@ -90,6 +90,7 @@
 				<ItemsRepeater.ItemTemplate>
 					<DataTemplate x:DataType="network:MyGame">
 						<ctrls:DmmGameExpander
+							Classes.safety="{Binding SafeIconEnabled}"
 							Header="{Binding Title}"
 							Description="{Binding Romaji}"
 							Description2="{Binding TitleRuby}"

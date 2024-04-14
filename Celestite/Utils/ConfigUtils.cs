@@ -297,6 +297,7 @@ namespace Celestite.Utils
         public static string GetLanguageCode() => _config.BaseSection.Locale;
         public static bool GetEnableEmbeddedWebView() => _config.BaseSection.EnableEmbeddedWebView;
         public static bool GetDisableIFrameEx() => _config.BaseSection.DisableIFrameEx;
+        public static bool GetSafeFanzaIcon() => _config.BaseSection.SafeFanzaIcon;
 
         public static void SetMica(bool value)
         {
@@ -338,6 +339,11 @@ namespace Celestite.Utils
         public static void SetDisableIFrameEx(bool value)
         {
             _config.BaseSection.DisableIFrameEx = value;
+            Save();
+        }
+        public static void SetSafeFanzaIcon(bool value)
+        {
+            _config.BaseSection.SafeFanzaIcon = value;
             Save();
         }
 

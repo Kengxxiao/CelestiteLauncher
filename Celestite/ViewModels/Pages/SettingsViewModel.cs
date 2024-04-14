@@ -43,6 +43,7 @@ namespace Celestite.ViewModels.Pages
         [ObservableProperty] private string _languageCode = ConfigUtils.GetLanguageCode();
         [ObservableProperty] private bool _enableEmbeddedWebView = ConfigUtils.GetEnableEmbeddedWebView();
         [ObservableProperty] private bool _disableIFrameEx = ConfigUtils.GetDisableIFrameEx();
+        [ObservableProperty] private bool _safeFanzaIcon = ConfigUtils.GetSafeFanzaIcon();
 
         public LocaleObject[] SupportedLanguage => [
             new LocaleObject { LocaleCode = "zh-CN", Name = "简体中文 (zh-CN)" },
@@ -101,6 +102,7 @@ namespace Celestite.ViewModels.Pages
         partial void OnEnableEmbeddedWebViewChanged(bool value) => ConfigUtils.SetEnableEmbeddedWebView(value);
         partial void OnDisableIFrameExChanged(bool value) => ConfigUtils.SetDisableIFrameEx(value);
         partial void OnLanguageCodeChanged(string value) => ConfigUtils.SetLanguageCode(value);
+        partial void OnSafeFanzaIconChanged(bool value) => ConfigUtils.SetSafeFanzaIcon(value);
 
         [RelayCommand]
         private void UpdateCacheSize()

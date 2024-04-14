@@ -310,6 +310,7 @@ namespace Celestite.Configs
         [MemoryPackOrder(6)] public bool BypassSystemProxy { get; set; } = false;
         [MemoryPackOrder(7)] public bool EnableEmbeddedWebView { get; set; } = false;
         [MemoryPackOrder(8)] public bool DisableIFrameEx { get; set; } = false;
+        [MemoryPackOrder(9)] public bool SafeFanzaIcon { get; set; } = false;
     }
 
     [MemoryPackable(SerializeLayout.Explicit)]

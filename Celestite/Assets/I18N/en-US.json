@@ -255,5 +255,8 @@
   "DisableIFrameExDescription": "When launching browser games, use the original page directly instead of extracting the game portion from an iframe.\n※ Opening the extracted game page directly bypasses the DMM region check, but the original page does not. Celestite uses this method to bypass the DMM region check for browser games.\n※ Celestite's embedded browser does not trigger the DMM region check on the original page.",
   "MissionExchangePoint": "Exchange DMMP",
 
-  "HigherWebView2VersionRequired": "To use Celestite's embedded browser, please upgrade Microsoft Edge WebView2 to version 120.0.2210.55 or higher. Click the prompt to go to the download page."
+  "HigherWebView2VersionRequired": "To use Celestite's embedded browser, please upgrade Microsoft Edge WebView2 to version 120.0.2210.55 or higher. Click the prompt to go to the download page.",
+
+  "SafeFanzaIcon": "Enable Safe FANZA Game Icons",
+  "SafeFanzaIconDesc": "※ This feature will blur the game icons when there are games from FANZA in the game list.\n※ Requires refreshing the game list."
 }

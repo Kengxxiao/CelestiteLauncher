@@ -146,6 +146,19 @@
 			</fluent:SettingsExpander.Footer>
 		</fluent:SettingsExpander>
 		<fluent:SettingsExpander
+			Header="{x:Static locale:Localization.SafeFanzaIcon}"
+			Description="{x:Static locale:Localization.SafeFanzaIconDesc}"
+			IconSource="Blur"
+        >
+			<fluent:SettingsExpander.Footer>
+				<ToggleSwitch
+                    IsChecked="{Binding SafeFanzaIcon}"
+                    OffContent="{x:Static locale:Localization.ToggleOff}"
+                    OnContent="{x:Static locale:Localization.ToggleOn}"
+                ></ToggleSwitch>
+			</fluent:SettingsExpander.Footer>
+		</fluent:SettingsExpander>
+		<fluent:SettingsExpander
 			Header="{x:Static locale:Localization.HardwareRegDialogTitle}"
 			Description="{x:Static locale:Localization.HardwareRegDesc}"
 			IconSource="LockShield"

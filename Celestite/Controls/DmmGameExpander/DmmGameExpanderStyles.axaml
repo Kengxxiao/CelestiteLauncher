@@ -106,7 +106,17 @@
 							<ProgressBar IsIndeterminate="False" IsVisible="{TemplateBinding UseProgress}" DockPanel.Dock="Bottom" Value="{TemplateBinding ProgressValue}">
 
 							</ProgressBar>
-							<Image Width="110" DockPanel.Dock="Left" Height="{StaticResource DmmGameExpanderMinHeight}" Source="{TemplateBinding GameIcon}"></Image>
+							<Image Width="110" DockPanel.Dock="Left" Height="{StaticResource DmmGameExpanderMinHeight}" Source="{TemplateBinding GameIcon}">
+								<Image.Styles>
+									<Style Selector="controls|DmmGameExpander.safety Image">
+										<Setter Property="Effect">
+											<Setter.Value>
+												<BlurEffect Radius="20"></BlurEffect>
+											</Setter.Value>
+										</Setter>
+									</Style>
+								</Image.Styles>
+							</Image>
 							<fluent:FABorder DockPanel.Dock="Right" VerticalAlignment="Center" Background="{TemplateBinding Background}"
                                              BorderBrush="{TemplateBinding BorderBrush}"
                                              Padding="{StaticResource DmmGameExpanderItemPadding}"
