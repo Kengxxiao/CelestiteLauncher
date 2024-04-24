@@ -31,8 +31,9 @@
 							</Panel>
 						</fluent:CommandBarElementContainer>
 						<fluent:CommandBarSeparator></fluent:CommandBarSeparator>
-						<fluent:CommandBarToggleButton
-                            IconSource="ProtocolHandler"
+            <fluent:CommandBarToggleButton
+              Name="MissionModeFanza"
+              IconSource="ProtocolHandler"
 							Label="FANZA"
 							IsChecked="{Binding Fanza}">
 						</fluent:CommandBarToggleButton>
@@ -119,7 +120,12 @@
                                                             Action3Label="{x:Static locale:Localization.ButtonEmuLaunch}"
                                                             Action3Command="{Binding EmuLaunchCommand}"
                                                             >
-
+                              <Classes.safety>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                  <Binding Path="#MissionModeFanza.IsChecked" />
+                                  <Binding Path="SafeIconEnabled" />
+                                </MultiBinding>
+                              </Classes.safety>
 														</control:DmmGameExpander>
 													</DataTemplate>
 												</ItemsRepeater.ItemTemplate>
@@ -214,7 +220,13 @@
 															Action3Label="{x:Static locale:Localization.ButtonEmuLaunch}"
                                                             Action3Command="{Binding EmuLaunchCommand}">
 
-														</control:DmmGameExpander>
+                              <Classes.safety>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                  <Binding Path="#MissionModeFanza.IsChecked" />
+                                  <Binding Path="SafeIconEnabled" />
+                                </MultiBinding>
+                              </Classes.safety>
+                            </control:DmmGameExpander>
 													</DataTemplate>
 												</ItemsRepeater.ItemTemplate>
 											</ItemsRepeater>

@@ -71,6 +71,8 @@ namespace Celestite.ViewModels.Pages
         public string Genre { get; set; } = string.Empty;
         public string IsPlayedText { get; set; } = string.Empty;
 
+        public bool SafeIconEnabled => ConfigUtils.GetSafeFanzaIcon();
+
         public string GameType { get; set; } = "PLAYER";
 
         private Task<Bitmap?>? _image;
