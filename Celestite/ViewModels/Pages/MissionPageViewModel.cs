@@ -59,6 +59,7 @@ namespace Celestite.ViewModels.Pages
 
         [ObservableProperty] private bool _mobileMode;
         [ObservableProperty] private bool _fanza = DmmGamePlayerApiHelper.IsAdultMode;
+        public bool SafeIconEnabled { get; set; } = ConfigUtils.GetSafeFanzaIcon();
 
         private CancellationTokenSource? _cancellationTokenSource;
 
@@ -77,6 +78,7 @@ namespace Celestite.ViewModels.Pages
                     Fanza = DmmGamePlayerApiHelper.IsAdultMode;
                 });
             };
+            ConfigUtils.OnSafeFanzaIconChanged += (_, _) => SafeIconEnabled = ConfigUtils.GetSafeFanzaIcon();
         }
 
         [RelayCommand]

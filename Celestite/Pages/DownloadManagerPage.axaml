@@ -10,6 +10,7 @@
              xmlns:converter="using:Celestite.Utils.Converters"
              xmlns:dialog="using:Celestite.Dialogs.Games"
              x:DataType="vm:DownloadManagerPageViewModel"
+			 Padding="0 20 0 20"
              x:Class="Celestite.Pages.DownloadManagerPage">
 	<UserControl.Resources>
 		<converter:FileSizeConverter x:Key="FileSizeConverter"></converter:FileSizeConverter>

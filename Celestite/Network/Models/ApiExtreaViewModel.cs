@@ -49,7 +49,6 @@ namespace Celestite.Network.Models
         [JsonIgnore] public string Romaji => LazyInitializer.EnsureInitialized(ref _romaji, () => WanaKana.ToRomaji(TitleRuby));
 
         public DmmTypeApiGame ApiType => DmmTypeApiGameHelper.GetGameTypeDataFromApiGameType(Type);
-        public bool SafeIconEnabled => ApiType.IsAdult && ConfigUtils.GetSafeFanzaIcon();
         private string ApiSuffix => DmmTypeApiGameHelper.GetSuffix(ApiType);
         public bool EnableDmmGameOptions => !ApiType.IsBrowser;
 

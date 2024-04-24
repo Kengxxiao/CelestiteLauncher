@@ -258,5 +258,5 @@
   "HigherWebView2VersionRequired": "To use Celestite's embedded browser, please upgrade Microsoft Edge WebView2 to version 120.0.2210.55 or higher. Click the prompt to go to the download page.",
 
   "SafeFanzaIcon": "Enable Safe FANZA Game Icons",
-  "SafeFanzaIconDesc": "※ This feature will blur the game icons when there are games from FANZA in the game list.\n※ Requires refreshing the game list."
+  "SafeFanzaIconDesc": "※ This feature will blur the game icons when there are games from FANZA in the game or mission list."
 }

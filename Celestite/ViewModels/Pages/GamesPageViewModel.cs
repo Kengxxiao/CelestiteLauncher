@@ -54,6 +54,7 @@ namespace Celestite.ViewModels.Pages
 
         [ObservableProperty] private bool _isOnlyShowViewable = true;
         [ObservableProperty] private string _filterText = string.Empty;
+        public bool SafeIconEnabled { get; set; } = ConfigUtils.GetSafeFanzaIcon();
 
         private static AddClientGameDialogViewModel? _permanentAddClientGameDialogViewModel;
         private static AddBrowserGameDialogViewModel? _permanentAddBrowserGameDialogViewModel;
@@ -127,6 +128,7 @@ namespace Celestite.ViewModels.Pages
             DmmGamePlayerApiHelper.ReGetGamesRequiredEvent += (_, _) => Dispatcher.UIThread.Invoke(RemoteUpdate);
             DmmGamePlayerApiHelper.LoginSessionChangedEvent += (_, _) => Dispatcher.UIThread.Invoke(RemoteUpdate);
             MyGame.GameStatusChangedEvent += (_, _) => Dispatcher.UIThread.Invoke(NotifyCollectionChanged);
+            ConfigUtils.OnSafeFanzaIconChanged += (_, _) => SafeIconEnabled = ConfigUtils.GetSafeFanzaIcon();
 
             DmmGamePlayerApiResult.NotBroadcastErrorOccured += async (_, args) =>
             {

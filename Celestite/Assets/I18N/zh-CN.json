@@ -258,5 +258,5 @@
   "HigherWebView2VersionRequired": "要使用 Celestite 内置浏览器，请升级 Microsoft Edge WebView2 到版本 120.0.2210.55 及以上。点击提示前往下载页面。",
 
   "SafeFanzaIcon": "启用安全的 FANZA 游戏图标",
-  "SafeFanzaIconDesc": "※ 这项功能会在当游戏列表中有来自FANZA的游戏时模糊化游戏图标。\n※ 需要重新获取游戏列表。"
+  "SafeFanzaIconDesc": "※ 这项功能会在当游戏或任务列表中有来自FANZA的游戏时模糊化游戏图标。"
 }

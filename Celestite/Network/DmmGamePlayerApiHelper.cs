@@ -286,7 +286,8 @@ namespace Celestite.Network
             CurrentUserInfo = response.Value.Data;
             UserInfoChangedEvent?.Invoke(response.Value.Data, EventArgs.Empty);
 
-            SetDmmApiAge(CurrentUserInfo!.IsStoreStartToAdult);
+            if (CurrentUserInfo != null)
+                SetDmmApiAge(CurrentUserInfo!.IsStoreStartToAdult);
             return DmmGamePlayerApiResult.Ok(response.Value);
         }
 

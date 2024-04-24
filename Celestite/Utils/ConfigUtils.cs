@@ -39,6 +39,7 @@ namespace Celestite.Utils
         public static string DmmGamesDefaultInstallFolder => _dmmGameCnf.DefaultInstallDir;
 
         public static event EventHandler<EventArgs>? OnGameContentChanged;
+        public static event EventHandler<EventArgs>? OnSafeFanzaIconChanged;
 
         static ConfigUtils()
         {
@@ -344,6 +345,7 @@ namespace Celestite.Utils
         public static void SetSafeFanzaIcon(bool value)
         {
             _config.BaseSection.SafeFanzaIcon = value;
+            OnSafeFanzaIconChanged?.Invoke(null, EventArgs.Empty);
             Save();
         }
 

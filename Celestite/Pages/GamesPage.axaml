@@ -21,8 +21,9 @@
 	<fluent:Frame CacheSize="1"
 				  NavigationPageFactory="{x:Static nav:GameNavigationFactory.Instance}"
 				  IsNavigationStackEnabled="True">
-		<StackPanel Spacing="8">
-			<DockPanel LastChildFill="False">
+		<Grid Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Path=Bounds.Height}"
+			  RowDefinitions="20, auto, 8, auto, 8, *">
+			<DockPanel LastChildFill="False" Grid.Row="1">
 				<TabControl DockPanel.Dock="Left"
 							SelectedIndex="{Binding SelectedIndex}">
 					<TabItem FontSize="20">
@@ -62,7 +63,7 @@
 					</fluent:CommandBar.PrimaryCommands>
 				</fluent:CommandBar>
 			</DockPanel>
-			<AutoCompleteBox
+			<AutoCompleteBox Grid.Row="3"
 				Watermark="{x:Static locale:Localization.TextBoxSearchGames}"
 				Text="{Binding FilterText}"
 				ItemsSource="{Binding GamesSource}"
@@ -83,32 +84,40 @@
 					</DataTemplate>
 				</AutoCompleteBox.ItemTemplate>
 			</AutoCompleteBox>
-			<ItemsRepeater ItemsSource="{Binding Games}">
-				<ItemsRepeater.Layout>
-					<StackLayout Spacing="8"></StackLayout>
-				</ItemsRepeater.Layout>
-				<ItemsRepeater.ItemTemplate>
-					<DataTemplate x:DataType="network:MyGame">
-						<ctrls:DmmGameExpander
-							Classes.safety="{Binding SafeIconEnabled}"
-							Header="{Binding Title}"
-							Description="{Binding Romaji}"
-							Description2="{Binding TitleRuby}"
-							GameIcon="{Binding Image^}"
-							Action1="Bot"
-							Action2="Settings"
-							Action3="Play"
-							Action1Label="{x:Static locale:Localization.ButtonEmuLaunch}"
-							Action2Label="{x:Static locale:Localization.ButtonSettings}"
-							Action3Label="{x:Static locale:Localization.ButtonLaunch}"
-							Action1Command="{Binding EmulateLaunchCommand}"
-							Action2Command="{Binding OpenGameSettingsCommand}"
-							Action3Command="{Binding LaunchGameCommand}"
-                            ></ctrls:DmmGameExpander>
-					</DataTemplate>
-				</ItemsRepeater.ItemTemplate>
-			</ItemsRepeater>
-		</StackPanel>
+			<ScrollViewer Grid.Row="5" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+				<ItemsRepeater ItemsSource="{Binding Games}">
+					<ItemsRepeater.Layout>
+						<StackLayout Spacing="8"></StackLayout>
+					</ItemsRepeater.Layout>
+					<ItemsRepeater.ItemTemplate>
+						<DataTemplate x:DataType="network:MyGame">
+							<ctrls:DmmGameExpander
+								Header="{Binding Title}"
+								Description="{Binding Romaji}"
+								Description2="{Binding TitleRuby}"
+								GameIcon="{Binding Image^}"
+								Action1="Bot"
+								Action2="Settings"
+								Action3="Play"
+								Action1Label="{x:Static locale:Localization.ButtonEmuLaunch}"
+								Action2Label="{x:Static locale:Localization.ButtonSettings}"
+								Action3Label="{x:Static locale:Localization.ButtonLaunch}"
+								Action1Command="{Binding EmulateLaunchCommand}"
+								Action2Command="{Binding OpenGameSettingsCommand}"
+								Action3Command="{Binding LaunchGameCommand}"
+                            >
+								<Classes.safety>
+									<MultiBinding Converter="{x:Static BoolConverters.And}">
+										<Binding Path="$parent[UserControl].((vm:GamesPageViewModel)DataContext).SafeIconEnabled"></Binding>
+										<Binding Path="ApiType.IsAdult"></Binding>
+									</MultiBinding>
+								</Classes.safety>
+							</ctrls:DmmGameExpander>
+						</DataTemplate>
+					</ItemsRepeater.ItemTemplate>
+				</ItemsRepeater>
+			</ScrollViewer>
+		</Grid>
 	</fluent:Frame>
 
 </UserControl>

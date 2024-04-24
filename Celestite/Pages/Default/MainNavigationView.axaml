@@ -23,7 +23,7 @@
 		</fluent:NavigationView.FooterMenuItems>
 
 		<ScrollViewer Padding="{StaticResource PageMargin}" x:Name="Scroll">
-			<fluent:Frame IsNavigationStackEnabled="False" x:Name="FrameView" NavigationPageFactory="{x:Static vm:NavigationFactory.Instance}" Padding="0 20 0 20"></fluent:Frame>
+			<fluent:Frame IsNavigationStackEnabled="False" x:Name="FrameView" NavigationPageFactory="{x:Static vm:NavigationFactory.Instance}"></fluent:Frame>
 		</ScrollViewer>
 	</fluent:NavigationView>
 </UserControl>

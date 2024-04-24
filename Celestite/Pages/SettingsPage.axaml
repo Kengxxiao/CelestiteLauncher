@@ -10,6 +10,7 @@
              xmlns:utils="using:Celestite.Utils"
 			 xmlns:dialog="using:Celestite.Dialogs"
              x:DataType="vm:SettingsViewModel"
+			 Padding="0 20 0 20"
              x:Class="Celestite.Pages.SettingsPage">
 
 	<UserControl.Resources>

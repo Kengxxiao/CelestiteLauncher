@@ -8,7 +8,7 @@
              xmlns:loc="using:Celestite.I18N"
 			 xmlns:fluent="using:FluentAvalonia.UI.Controls"
              x:DataType="vm:AccountPageViewModel"
-
+			 Padding="0 20 0 20"
              x:Class="Celestite.AccountPage">
 	<UserControl.DataContext>
 		<vm:AccountPageViewModel></vm:AccountPageViewModel>
