@@ -39,9 +39,11 @@ public partial class GameInfo
     public bool AllowVisibleSetting { get; set; }
     // registered_time 未使用
     // last_played 类型不确定
-    public GAME_STATE State { get; set; }
-    public USER_STATE UserState { get; set; }
-    public TAPI_GAME_ACTION[] Actions { get; set; } = [];
+
+    // TODO: 各类ENUM不完整
+    public string State { get; set; } = string.Empty;
+    public string UserState { get; set; } = string.Empty;
+    public string[] Actions { get; set; } = [];
     public bool IsShowLatestVersion { get; set; }
     public string LatestVersion { get; set; } = string.Empty;
     public bool IsShowFileSize { get; set; }
