@@ -392,8 +392,8 @@ namespace Celestite.ViewModels.Pages
                             gameData.IsPlayedText = isPlayed.TextContent.Trim();
                         gameData.GameType = gameData.Image.Split('/') switch
                         {
-                            [.., "client", _, _] => "PLAYER",
-                            [.., "app", _, _] => "PC",
+                        [.., "client", _, _] => "PLAYER",
+                        [.., "app", _, _] => "PC",
                             _ => gameData.GameType
                         };
                     }

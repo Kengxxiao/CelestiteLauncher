@@ -299,14 +299,20 @@ namespace Celestite.Network
 
         public static async UniTask<NetworkOperationResult<TResp>> DgpGetJsonAsync<TResp>(string path,
             JsonTypeInfo<TResp> jsonTypeInfo, CancellationToken cancellationToken = default) where TResp : class
-            => await GetJsonAsync(ApiBase, path, jsonTypeInfo, cancellationToken);
-        public static async UniTask<NetworkOperationResult<TResp>> GetJsonAsync<TResp>(string baseUrl, string path, JsonTypeInfo<TResp> jsonTypeInfo, CancellationToken cancellationToken = default) where TResp : class
+            => await GetJsonAsync(ApiBase, path, jsonTypeInfo, string.Empty, string.Empty, cancellationToken);
+        public static async UniTask<NetworkOperationResult<TResp>> GetJsonAsync<TResp>(string baseUrl, string path, JsonTypeInfo<TResp> jsonTypeInfo, string referer, string xAccessFrom, CancellationToken cancellationToken = default) where TResp : class
         {
             try
             {
                 var url = ZString.Concat(baseUrl, path);
-                var httpResponse = await MainHttpClient.GetFromJsonAsync(url, jsonTypeInfo, cancellationToken).ConfigureAwait(false);
-                return httpResponse == null ? NetworkOperationResult.Fail<TResp>(new NoNullAllowedException()) : NetworkOperationResult.Ok(httpResponse);
+                using var request = new HttpRequestMessage(HttpMethod.Get, url);
+                if (!string.IsNullOrEmpty(referer))
+                    request.Headers.TryAddWithoutValidation("Referer", referer);
+                if (!string.IsNullOrEmpty(xAccessFrom))
+                    request.Headers.TryAddWithoutValidation("X-Access-From", xAccessFrom);
+                using var response = await MainHttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                return NetworkOperationResult.Ok(JsonSerializer.Deserialize(await response.Content.ReadAsStreamAsync(cancellationToken), jsonTypeInfo)!);
             }
             catch (Exception ex)
             {

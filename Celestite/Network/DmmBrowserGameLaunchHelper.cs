@@ -17,6 +17,9 @@ namespace Celestite.Network
         private const string PcPlayBaseGeneral = "https://{0}-play.games.dmm.com";
         private const string PcPlayBaseAdult = "https://{0}-play.games.dmm.co.jp";
 
+        private const string ArtemisGeneral = "https://artemis.games.dmm.com";
+        private const string ArtemisAdult = "https://artemis.games.dmm.co.jp";
+
         private const string ActivateDmmAddress = "activate.games.dmm.com/browser-game/install";
         private const string HimariProxyActivateAddress =
             "celestite-himari-proxy.kengxxiao.com/3292efe9917f4eafc58f271cfb5b14fe71e53f3d";
@@ -31,6 +34,21 @@ namespace Celestite.Network
             if (activateRequest.Value.StatusCode == HttpStatusCode.SeeOther) return true;
             NotificationHelper.Warn(Localization.AddBrowserGameFailed);
             return false;
+        }
+
+        public static async UniTask<ArtemisInitGameFrameResponse?> ArtemisInitGameFrame(string titleId, DmmTypeApiGame advancedType, string browserEnv = "PC")
+        {
+            var getUrl = ZString.Format("/member/{0}/init-game-frame/{1}", browserEnv.ToLower(), titleId);
+            var request = await HttpHelper.GetJsonAsync(advancedType.IsAdult ? ArtemisAdult : ArtemisGeneral, getUrl, DmmGamePlayerApiResponseBaseContext.Default.ArtemisInitGameFrameResponse, advancedType.IsAdult ? ArtemisAdult : ArtemisGeneral, "play");
+            if (request.Failed) return null;
+            return request.Value;
+        }
+
+        public static async UniTask<bool> ArtemisStartGamePlaying(string titleId, DmmTypeApiGame advancedType, string browserEnv = "PC")
+        {
+            var url = ZString.Format("{0}/member/{1}/mission/start-game-playing", advancedType.IsAdult ? ArtemisAdult : ArtemisGeneral, browserEnv.ToLower());
+            var request = await HttpHelper.PostJsonAsync(url, new ArtemisStartPlayingRequest { TitleId = titleId }, DmmGamePlayerApiRequestBaseContext.Default.ArtemisStartPlayingRequest);
+            return request.Success;
         }
 
         public static string GetBrowserGameUrl(string productId, DmmTypeApiGame advancedType, string browserEnv = "PC")

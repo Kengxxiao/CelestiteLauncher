@@ -281,6 +281,22 @@ public partial class LogNotification
     public string OpenId { get; set; } = string.Empty;
 }
 
+public class ArtemisInitGameFrameResponse
+{
+    [JsonPropertyName("game_frame_url")]
+    public string GameFrameUrl { get; set; } = string.Empty;
+    [JsonPropertyName("security_token")]
+    public string SecurityToken { get; set; } = string.Empty;
+    [JsonPropertyName("frame_width")]
+    public string FrameWidth { get; set; } = string.Empty;
+    [JsonPropertyName("title")]
+    public string Title { get; set; } = string.Empty;
+    [JsonPropertyName("app_id")]
+    public long AppId { get; set; }
+    [JsonPropertyName("code")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string Code { get; set; } = string.Empty;
+}
 
 [JsonSerializable(typeof(DmmGamePlayerApiResponse))]
 [JsonSerializable(typeof(DmmGamePlayerApiResponse<LoginUrlResponse>))]
@@ -306,6 +322,7 @@ public partial class LogNotification
 [JsonSerializable(typeof(DmmGamePlayerApiResponse<UninstallInfo>))]
 [JsonSerializable(typeof(DmmGamePlayerApiResponse<ShortcutResponse>))]
 [JsonSerializable(typeof(AmazonCookie))]
+[JsonSerializable(typeof(ArtemisInitGameFrameResponse))]
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
 public partial class DmmGamePlayerApiResponseBaseContext : JsonSerializerContext
 {

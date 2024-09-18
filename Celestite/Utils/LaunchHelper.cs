@@ -51,8 +51,13 @@ namespace Celestite.Utils
                 if (context == null) return;
                 if (!DmmBrowserGameLaunchHelper.FindAndInvokeMissionCall(context.Scripts))
                 {
-                    NotificationHelper.Warn(Localization.EmuLaunchFailed);
-                    return;
+                    // 一些游戏使用 Artemis API 获取启动参数和完成任务
+                    var startPlayingSuccess = await DmmBrowserGameLaunchHelper.ArtemisStartGamePlaying(productId, gameType, browserEnv);
+                    if (!startPlayingSuccess)
+                    {
+                        NotificationHelper.Warn(Localization.EmuLaunchFailed);
+                        return;
+                    }
                 }
                 NotificationHelper.Success(Localization.EmuLaunchSuccess);
                 return;
@@ -162,12 +167,19 @@ namespace Celestite.Utils
                 }
                 var context = await DmmBrowserGameLaunchHelper.GetBrowserPageContext(productId, apiType);
                 if (context == null) return;
-                DmmBrowserGameLaunchHelper.FindAndInvokeMissionCall(context.Scripts);
+                var missionFindSuccess = DmmBrowserGameLaunchHelper.FindAndInvokeMissionCall(context.Scripts);
+                if (!missionFindSuccess)
+                    await DmmBrowserGameLaunchHelper.ArtemisStartGamePlaying(productId, apiType); // 尝试使用 Artemis API
                 var launchUrl = DmmBrowserGameLaunchHelper.FindAndInvokeLaunchGame(context);
                 if (string.IsNullOrEmpty(launchUrl))
                 {
-                    NotificationHelper.Warn(Localization.LaunchBrowserGameFailed);
-                    return;
+                    var artemisLaunchInfo = await DmmBrowserGameLaunchHelper.ArtemisInitGameFrame(productId, apiType);
+                    if (artemisLaunchInfo == null || !string.IsNullOrEmpty(artemisLaunchInfo.Code))
+                    {
+                        NotificationHelper.Warn(Localization.LaunchBrowserGameFailed);
+                        return;
+                    }
+                    launchUrl = ZString.Concat("https:", artemisLaunchInfo.GameFrameUrl);
                 }
                 ProcessUtils.OpenExternalLink(launchUrl);
                 return;
