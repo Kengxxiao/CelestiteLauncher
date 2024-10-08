@@ -608,11 +608,19 @@ namespace Celestite.Network
             => await PostJsonAsync(ApiBase, path, request, requestJsonTypeInfo, responseJsonTypeInfo, false, false, cancellationToken);
 
         public static async UniTask<NetworkOperationResult> PostJsonAsync<TReq>(string url,
-            TReq request, JsonTypeInfo<TReq> requestJsonTypeInfo, CancellationToken cancellationToken = default)
+            TReq request, JsonTypeInfo<TReq> requestJsonTypeInfo, bool useMobileUa = false, string referer = "", CancellationToken cancellationToken = default)
         {
             try
             {
-                using var httpResponse = await MainHttpClient.PostAsJsonAsync(url, request, requestJsonTypeInfo, cancellationToken).ConfigureAwait(false);
+                using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+                using var content = JsonContent.Create(request, requestJsonTypeInfo);
+                requestMessage.Headers.TryAddWithoutValidation("User-Agent",
+                    useMobileUa ? MobileUa : SystemInfoUtils.RequestHeaderUserAgentName);
+                if (!string.IsNullOrEmpty(referer))
+                    requestMessage.Headers.TryAddWithoutValidation("Referer", referer);
+                requestMessage.Content = content;
+
+                using var httpResponse = await MainHttpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
                 httpResponse.EnsureSuccessStatusCode();
                 return NetworkOperationResult.Ok();
             }

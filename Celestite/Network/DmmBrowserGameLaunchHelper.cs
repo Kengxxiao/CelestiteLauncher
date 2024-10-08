@@ -47,7 +47,8 @@ namespace Celestite.Network
         public static async UniTask<bool> ArtemisStartGamePlaying(string titleId, DmmTypeApiGame advancedType, string browserEnv = "PC")
         {
             var url = ZString.Format("{0}/member/{1}/mission/start-game-playing", advancedType.IsAdult ? ArtemisAdult : ArtemisGeneral, browserEnv.ToLower());
-            var request = await HttpHelper.PostJsonAsync(url, new ArtemisStartPlayingRequest { TitleId = titleId }, DmmGamePlayerApiRequestBaseContext.Default.ArtemisStartPlayingRequest);
+            var isMobile = browserEnv == "SP";
+            var request = await HttpHelper.PostJsonAsync(url, new ArtemisStartPlayingRequest { TitleId = titleId }, DmmGamePlayerApiRequestBaseContext.Default.ArtemisStartPlayingRequest, useMobileUa: isMobile, referer: advancedType.IsAdult ? "https://play.games.dmm.co.jp" : "https://play.games.dmm.com");
             return request.Success;
         }
 
