@@ -136,6 +136,25 @@ namespace Celestite.Network.Downloader
             _isInit = true;
         }
 
+        public void InitDownloaderR2(string domain, string sign, CancellationToken token = default)
+        {
+            var cookies = sign.Split(';').Where(x => !string.IsNullOrWhiteSpace(x));
+            var amazonCookie = new AmazonCookie();
+            foreach (var c in cookies)
+            {
+                var kv = c.Split('=');
+                if (kv.Length != 2)
+                    continue;
+                if (kv[0] == "CloudFront-Key-Pair-Id")
+                    amazonCookie.Key = kv[1];
+                else if (kv[0] == "CloudFront-Signature")
+                    amazonCookie.Signature = kv[1];
+                else if (kv[0] == "CloudFront-Policy")
+                    amazonCookie.Policy = kv[1];
+            }
+            InitDownloader(domain, amazonCookie, token);
+        }
+
         private void CheckReady()
         {
             if (!_isInit || _cts == null)

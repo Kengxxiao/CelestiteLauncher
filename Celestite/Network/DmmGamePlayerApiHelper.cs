@@ -427,7 +427,7 @@ namespace Celestite.Network
         public static async UniTask<DmmGamePlayerApiResult<InstallClInfo>> GetInstallClInfo(string productId, TApiGameType type,
             CancellationToken cancellationToken = default)
         {
-            var response = await HttpHelper.DgpPostJsonAsync("/v5/install/cl", new GameTypeDataWithSystemInfo(productId, type),
+            var response = await HttpHelper.DgpPostJsonAsync("/v5/r2/install/cl", new GameTypeDataWithSystemInfo(productId, type),
                 DmmGamePlayerApiRequestBaseContext.Default.GameTypeDataWithSystemInfo, DmmGamePlayerApiResponseBaseContext.Default.DmmGamePlayerApiResponseInstallClInfo, cancellationToken);
             return response.Failed ? DmmGamePlayerApiResult.Fail<InstallClInfo>(response.Exception) : DmmGamePlayerApiResult.Ok(response.Value, productId, type);
         }
@@ -435,7 +435,7 @@ namespace Celestite.Network
         public static async UniTask<DmmGamePlayerApiResult<LaunchClInfo>> LaunchClGame(string productId, TApiGameType type,
             CancellationToken cancellationToken = default)
         {
-            var response = await HttpHelper.DgpPostJsonAsync("/v5/launch/cl", new LaunchClRequest(productId, type),
+            var response = await HttpHelper.DgpPostJsonAsync("/v5/r2/launch/cl", new LaunchClRequest(productId, type),
                 DmmGamePlayerApiRequestBaseContext.Default.LaunchClRequest, DmmGamePlayerApiResponseBaseContext.Default.DmmGamePlayerApiResponseLaunchClInfo, cancellationToken);
             return response.Failed ? DmmGamePlayerApiResult.Fail<LaunchClInfo>(response.Exception) : DmmGamePlayerApiResult.Ok(response.Value, productId, type);
         }

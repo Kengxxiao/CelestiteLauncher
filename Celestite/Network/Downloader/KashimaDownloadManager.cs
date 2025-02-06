@@ -188,12 +188,17 @@ namespace Celestite.Network.Downloader
 
                     var defineCommonPath =
                         PathCommonPrefixFinder.GetCommonPath(array.DownloadFileInfos.Select(x => x.Path), true);
-                    var cookie =
+                    if (string.IsNullOrEmpty(clInfo.Sign))
+                    {
+                        var cookie =
                         await DmmGamePlayerApiHelper.GetDownloadCookie(ZString.Concat(array.Domain, defineCommonPath),
                             cancellationToken: cts.Token);
-                    if (cookie.Failed) return;
+                        if (cookie.Failed) return;
 
-                    downloader.InitDownloader(array.Domain, cookie.Value, cts.Token);
+                        downloader.InitDownloader(array.Domain, cookie.Value, cts.Token);
+                    }
+                    else
+                        downloader.InitDownloaderR2(array.Domain, clInfo.Sign, cts.Token);
 
                     try
                     {

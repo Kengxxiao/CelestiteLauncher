@@ -166,6 +166,7 @@ public class ClInfo
     public FILE_CHECK_TYPE FileCheckType { get; set; }
     public long TotalSize { get; set; }
     public string LatestVersion { get; set; } = string.Empty;
+    public string Sign { get; set; } = string.Empty;
 }
 
 public sealed class InstallClInfo : ClInfo
