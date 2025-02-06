@@ -104,9 +104,9 @@ namespace Celestite.Utils
         }
 #pragma warning restore IDE1006 // 命名样式
 
-        private const string ProcessElectronVersion = "28.0.0";
+        private const string ProcessElectronVersion = "33.3.1";
 
-        public const string AppConfigProtocolVersion = "5.2.34";
+        public const string AppConfigProtocolVersion = "5.3.20";
         public const string Architecture = "amd64";
 
         private static string? _userOs;
