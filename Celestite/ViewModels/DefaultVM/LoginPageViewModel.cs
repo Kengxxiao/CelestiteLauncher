@@ -196,6 +196,7 @@ namespace Celestite.ViewModels.DefaultVM
                 try
                 {
                     await using var sqlConnection = ConfigUtils.OpenDgpCookiesConnection();
+                    var version = Meta.GetMeta(sqlConnection, "version");
                     var altHash = ElectronCookie.GetCookieByName(sqlConnection, "althash");
                     var hasAltHash = ElectronCookie.GetCookieByName(sqlConnection, "has_althash");
                     if (altHash == null || hasAltHash == null)
@@ -204,8 +205,10 @@ namespace Celestite.ViewModels.DefaultVM
                         return;
                     }
 
-                    var decryptedAltHash = DecryptCookie(altHash.EncryptedValue.AsSpan(), masterKey);
-                    var decryptedHasAltHash = DecryptCookie(hasAltHash.EncryptedValue.AsSpan(), masterKey);
+                    var newFormat = version != null && version.Value >= 24;
+
+                    var decryptedAltHash = DecryptCookie(altHash.EncryptedValue.AsSpan(), masterKey, newFormat);
+                    var decryptedHasAltHash = DecryptCookie(hasAltHash.EncryptedValue.AsSpan(), masterKey, newFormat);
 
                     var loginResult =
                         await DmmAltHashLoginHelper.LoginFromAltHash(decryptedAltHash, decryptedHasAltHash);
@@ -215,11 +218,11 @@ namespace Celestite.ViewModels.DefaultVM
                         return;
                     }
 
-                    altHash.EncryptedValue = EncryptCookie(loginResult.Value.AltHash.Value, masterKey);
+                    altHash.EncryptedValue = EncryptCookie(loginResult.Value.AltHash.Value, masterKey, newFormat, altHash.HostKey);
                     altHash.ExpiresUtc =
                         (((DateTimeOffset)loginResult.Value.AltHash.Expires).ToUnixTimeSeconds() + 11644473600) *
                         1000000;
-                    hasAltHash.EncryptedValue = EncryptCookie(loginResult.Value.HasAltHash.Value, masterKey);
+                    hasAltHash.EncryptedValue = EncryptCookie(loginResult.Value.HasAltHash.Value, masterKey, newFormat, hasAltHash.HostKey);
                     hasAltHash.ExpiresUtc =
                         (((DateTimeOffset)loginResult.Value.HasAltHash.Expires).ToUnixTimeSeconds() + 11644473600) *
                         1000000;
@@ -260,7 +263,7 @@ namespace Celestite.ViewModels.DefaultVM
             }
         }
 
-        private static string DecryptCookie(Span<byte> encryptedData, byte[] masterKey)
+        private static string DecryptCookie(Span<byte> encryptedData, byte[] masterKey, bool newFormat = false)
         {
             if (encryptedData.Length < 3 + 12 + 16)
                 return string.Empty;
@@ -271,10 +274,12 @@ namespace Celestite.ViewModels.DefaultVM
             Span<byte> resultBytes = stackalloc byte[cipherText.Length];
             using var aesGcm = new AesGcm(masterKey, 16);
             aesGcm.Decrypt(nonce, cipherText, tag, resultBytes);
+            if (newFormat)
+                resultBytes = resultBytes[32..];
             return Encoding.UTF8.GetString(resultBytes);
         }
 
-        private static byte[] EncryptCookie(string data, byte[] masterKey)
+        private static byte[] EncryptCookie(string data, byte[] masterKey, bool newFormat = false, string newFormatDomain = "")
         {
             using var stream = new MemoryStream();
             stream.Write("v10"u8);
@@ -282,6 +287,14 @@ namespace Celestite.ViewModels.DefaultVM
             using var aesGcm = new AesGcm(masterKey, 16);
             Span<byte> tag = stackalloc byte[16];
             var cipherText = Encoding.UTF8.GetBytes(data);
+            if (newFormat && !string.IsNullOrEmpty(newFormatDomain))
+            {
+                var sha256 = SHA256.HashData(Encoding.UTF8.GetBytes(newFormatDomain));
+                var cipherText2 = new byte[sha256.Length + cipherText.Length];
+                Array.Copy(sha256, cipherText2, sha256.Length);
+                Array.Copy(cipherText, 0, cipherText2, sha256.Length, cipherText.Length);
+                cipherText = cipherText2;
+            }
             var encryptedCipherText = new byte[cipherText.Length];
             aesGcm.Encrypt(nonce, cipherText, encryptedCipherText, tag);
             stream.Write(nonce);

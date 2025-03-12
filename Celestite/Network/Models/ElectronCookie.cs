@@ -5,6 +5,17 @@ using Microsoft.Data.Sqlite;
 namespace Celestite.Network.Models
 {
     [DapperAot]
+    public class Meta
+    {
+        public static Meta? GetMeta(SqliteConnection connection, string Key) =>
+            connection.QueryFirstOrDefault<Meta>(
+                "select value from meta where key = @Key", new { Key });
+
+        [UseColumnAttribute]
+        [Column("value")]
+        public int Value { get; set; }
+    }
+    [DapperAot]
     public class ElectronCookie
     {
         public static ElectronCookie? GetCookieByName(SqliteConnection connection, string name) =>
